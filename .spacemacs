@@ -70,9 +70,9 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(company
                                       company-tern
+                                      indium
                                       all-the-icons
                                       spaceline-all-the-icons
-                                      all-the-icons-dired
                                       prettier-js
                                       doom-themes
                                       )
@@ -165,7 +165,7 @@ values."
                                :size 16
                                :weight normal
                                :width semi-expanded
-                               :powerline-scale 1.3)
+                               :powerline-scale 1.6)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -338,6 +338,8 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (setq ranger-override-dired t)
+  (setq powerline-default-separator 'curve)
 
   (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.4.0/bin") exec-path))
 
@@ -348,8 +350,6 @@ you should place your code here."
                 evil-escape-unordered-key-sequence "true")
   (setq-default js-indent-level 2)
   (setq-default js2-basic-offset 2)
-  (setq neo-theme 'nerd)
-  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode)
@@ -367,7 +367,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window))))
+    (indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
