@@ -43,7 +43,7 @@ values."
      emacs-lisp
      git
      evil-cleverparens
-     tmux
+     shell
      ranger
      restclient
      pdf-tools
@@ -58,10 +58,11 @@ values."
      ;; git
      ;; markdown
      ;; org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
+    (shell :variables
+           shell-default-height 30
+           shell-default-term-shell "/bin/zsh"
+           shell-default-position 'bottom)
+          ;; spell-checking
      ;; syntax-checking
      ;; version-control
      )
@@ -197,7 +198,7 @@ values."
    dotspacemacs-retain-visual-state-on-shift t
    ;; If non-nil, J and K move lines up and down when in visual mode.
    ;; (default nil)
-   dotspacemacs-visual-line-move-text nil
+   dotspacemacs-visual-line-move-text t
    ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
    ;; (default nil)
    dotspacemacs-ex-substitute-global nil
@@ -212,7 +213,7 @@ values."
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 10
+   dotspacemacs-large-file-size 100
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
@@ -265,7 +266,7 @@ values."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-inactive-transparency 90
+   dotspacemacs-inactive-transparency 50
    ;; If non nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
    ;; If non nil show the color guide hint for transient state keys. (default t)
@@ -341,19 +342,16 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (add-hook 'buffer-list-update-hook 'spacemacs/toggle-auto-completion-off)
 
-  (setq ranger-override-dired t)
   (setq powerline-default-separator 'curve)
 
   (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.4.0/bin") exec-path))
 
+
   ;; Fixed jshint syntax cheking
   (setq-default js2-global-externs '("module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
 
-  (setq-default evil-escape-key-sequence "jk"
-                evil-escape-unordered-key-sequence "true")
   (setq-default js-indent-level 2)
   (setq-default js2-basic-offset 2)
-
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode)
   (global-set-key (kbd "C-SPC") 'hippie-expand)
