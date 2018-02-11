@@ -349,7 +349,8 @@ you should place your code here."
   (setq js2-strict-missing-semi-warning nil)
   (global-hl-line-mode -1)
   (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
-
+  (setq-default evil-escape-key-sequence "hh")
+  (setq-default evil-escape-delay 0.4)
   (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.4.0/bin") exec-path))
 
 
