@@ -357,8 +357,8 @@ you should place your code here."
   ;; Fixed jshint syntax cheking
   (setq-default js2-global-externs '("module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
 
-  (setq-default js-indent-level 2)
-  (setq-default js2-basic-offset 2)
+  (setq-default js-indent-level 4)
+  (setq-default js2-basic-offset 4)
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode)
   (global-set-key (kbd "C-SPC") 'hippie-expand)
