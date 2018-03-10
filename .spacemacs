@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     php
      rust
      markdown
      ;; ----------------------------------------------------------------
@@ -52,6 +53,7 @@ values."
      mu4e
      javascript
      ;;react
+     themes-megapack
      ivy
      auto-completion
      ;; better-defaults
@@ -78,7 +80,6 @@ values."
                                       all-the-icons
                                       spaceline-all-the-icons
                                       prettier-js
-                                      doom-themes
                                       rjsx-mode
                                       )
    ;; A list of packages that cannot be updated.
@@ -151,26 +152,18 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(
-                         misterioso
-                         wombat
-                         doom-one
-                         doom-monokai
-                         tango-dark
-                         doom-tomorrow-night
-                         tango
-                         default
-                         spacemacs-dark)
+   dotspacemacs-themes '(minimal
+                         darktooth
+                         oldlace)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+                               :size 14
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.4)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -216,7 +209,7 @@ values."
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 100
+   dotspacemacs-large-file-size 5
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
@@ -265,7 +258,7 @@ values."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 90
+   dotspacemacs-active-transparency 98
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -343,16 +336,24 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+
+  (define-global-minor-mode global-hidden-mode-line-mode
+    hidden-mode-line-mode ;; mode to be enabled
+    (lambda () (hidden-mode-line-mode) ;; function to enable mode
+      ))
+
+  (global-hidden-mode-line-mode)
+
   (add-hook 'buffer-list-update-hook 'spacemacs/toggle-auto-completion-off)
 
   (setq powerline-default-separator 'curve)
   (setq js2-strict-missing-semi-warning nil)
   (global-hl-line-mode -1)
+  (global-subword-mode 1)
   (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
   (setq-default evil-escape-key-sequence "hh")
   (setq-default evil-escape-delay 0.4)
   (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.4.0/bin") exec-path))
-
 
   ;; Fixed jshint syntax cheking
   (setq-default js2-global-externs '("module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
@@ -362,8 +363,7 @@ you should place your code here."
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode)
   (global-set-key (kbd "C-SPC") 'hippie-expand)
-  ;; (spacemacs/enable-transparency)
-
+  (spacemacs/enable-transparency)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -375,12 +375,11 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (rjsx-mode toml-mode racer pos-tip cargo rust-mode fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-restclient know-your-http-well company-auctex auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window)))
+    (white-sand-theme rebecca-theme exotica-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode rjsx-mode toml-mode racer pos-tip cargo rust-mode fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-restclient know-your-http-well company-auctex auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window)))
  '(send-mail-function (quote mailclient-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(term-color-blue ((t (:background "dodger blue" :foreground "dodger blue"))))
- '(term-color-red ((t (:background "red1" :foreground "firebrick1")))))
+ '(default ((((class color) (min-colors 89)) (:background "grey10" :foreground "grey90")))))
