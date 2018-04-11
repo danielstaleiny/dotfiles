@@ -352,7 +352,7 @@ you should place your code here."
 
 
   ;; Fixed jshint syntax cheking
-  (setq-default js2-global-externs '("beforeAll" "afterAll" "test" "module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
+  (setq-default js2-global-externs '("Buffer" "beforeAll" "afterAll" "test" "module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
 
   (setq-default js-indent-level 4)
   (setq-default js2-basic-offset 4)
@@ -360,13 +360,28 @@ you should place your code here."
   (add-hook 'web-mode-hook 'prettier-js-mode)
   (global-set-key (kbd "C-SPC") 'hippie-expand)
   (spacemacs/enable-transparency)
-  (define-key ac-completing-map "\t" 'ac-complete)
-  (define-key ac-completing-map "\r" nil)
-  (define-key ac-completing-map "ESC" 'ac-stop)
   ;; (setq ac-auto-start nil)
   (setq ac-auto-show-menu nil)
-  (javascript :variables javascript-disable-tern-port-files nil)
   (add-hook 'after-init-hook 'global-company-mode)
+
+  ;; esc quits
+  (defun minibuffer-keyboard-quit ()
+;   "Abort recursive edit.
+;In Delete Selection mode, if the mark is active, just deactivate it;
+;then it takes a second \\[keyboard-quit] to abort the minibuffer."
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+        (setq deactivate-mark  t)
+      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+      (abort-recursive-edit)))
+  (define-key evil-normal-state-map [escape] 'keyboard-quit)
+  (define-key evil-visual-state-map [escape] 'keyboard-quit)
+  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+  (global-set-key [escape] 'evil-exit-emacs-state)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
