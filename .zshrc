@@ -102,6 +102,7 @@ export PATH=~/.gem/ruby/2.5.0/bin:$PATH
 
 alias prod='ssh daniel@collageofficial.com'
 alias staging='ssh daniel@staging.collageofficial.com'
+alias eatmybackyard='ssh daniel@167.99.42.43'
 alias e='exit'
 alias cc='clear'
 alias gs='git status -sb'
