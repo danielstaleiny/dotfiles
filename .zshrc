@@ -99,10 +99,14 @@ function tldr() {
 
 export PATH=~/.local/bin:$PATH
 export PATH=~/.gem/ruby/2.5.0/bin:$PATH
+export PATH=~/.nix-profile/bin:$PATH
+export PATH=~/env/bin:$PATH
+export PATH=~/env/lib/python3.7/site-packages:$PATH
+
 
 alias prod='ssh daniel@collageofficial.com'
 alias staging='ssh daniel@staging.collageofficial.com'
-alias eatmybackyard='ssh daniel@167.99.42.43'
+alias eatmybackyard='ssh daniel@eatmybackyard.dk'
 alias e='exit'
 alias cc='clear'
 alias gs='git status -sb'
@@ -111,5 +115,6 @@ alias grep='rg'
 alias vpnup='wg-quick up mullvad-se1'
 alias vpndown='wg-quick down mullvad-se1'
 alias example='tldr -t base16'
+alias r='ranger'
 export LD_LIBRARY_PATH=/usr/lib32/nvidia:/usr/lib/nvidia:$LD_LIBRARY_PATH
 

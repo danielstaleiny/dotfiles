@@ -30,7 +30,9 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(sql
+   '(haskell
+     python
+     sql
      php
      rust
      markdown
@@ -49,6 +51,7 @@ values."
      pdf-tools
      latex
      javascript
+     org
      ;;react
      themes-megapack
      ivy
@@ -136,7 +139,7 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 5)(projects . 20))
+   dotspacemacs-startup-lists '((agenda . 1)(todos . 1)(recents . 5)(projects . 20))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -149,7 +152,6 @@ values."
                          darktooth
                          tao-yang
                          soft-stone
-                         monochrome-bright
                          minimal
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -339,13 +341,13 @@ you should place your code here."
 
   (remove-hook 'js2-mode-hook 'tern-mode)
 
-  (define-global-minor-mode global-hidden-mode-line-mode
-    hidden-mode-line-mode ;; mode to be enabled
-    (lambda () (hidden-mode-line-mode) ;; function to enable mode
-      ))
+  ;; (define-global-minor-mode global-hidden-mode-line-mode
+  ;;   hidden-mode-line-mode ;; mode to be enabled
+  ;;   (lambda () (hidden-mode-line-mode) ;; function to enable mode
+  ;;     ))
+  ;; (global-hidden-mode-line-mode)
 
-  (global-hidden-mode-line-mode)
-  (setq powerline-default-separator 'curve)
+  ;; (setq powerline-default-separator 'curve)
   (setq js2-strict-missing-semi-warning nil)
   (global-hl-line-mode -1)
   (global-subword-mode 1)
@@ -366,6 +368,29 @@ you should place your code here."
   ;; (setq ac-auto-start nil)
   (setq ac-auto-show-menu nil)
   (add-hook 'after-init-hook 'global-company-mode)
+
+  (setq org-agenda-files (list
+                               "~/org/notes.org"
+                               "~/todos.org"
+                               ))
+
+  (setq org-capture-templates
+        '(("t" "todo" entry (file org-default-notes-file)
+	         "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+	        ("m" "Meeting" entry (file org-default-notes-file)
+	         "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
+	        ("d" "Diary" entry (file+datetree "~/org/diary.org")
+	         "* %?\n%U\n" :clock-in t :clock-resume t)
+	        ("i" "Idea" entry (file org-default-notes-file)
+	         "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
+	        ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
+	         "** NEXT %? \nDEADLINE: %t") ))
+
+  (setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                   (org-agenda-files :maxlevel . 9))))
+  (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
+
+
 
   ;; esc quits
   (defun minibuffer-keyboard-quit ()
@@ -420,14 +445,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-want-Y-yank-to-eol nil)
- '(org-html-head-include-default-style nil)
- '(org-html-head-include-scripts nil)
- '(org-html-html5-fancy t)
- '(org-html-postamble nil)
- '(org-html-xml-declaration nil)
  '(package-selected-packages
    (quote
-    (yasnippet-snippets ivy-xref editorconfig avy counsel s gmail-message-mode ham-mode html-to-markdown flymd edit-server swiper smartparens evil helm helm-core ivy ghub async projectile dash org-mime packed white-sand-theme rebecca-theme exotica-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode rjsx-mode toml-mode racer pos-tip cargo rust-mode fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-restclient know-your-http-well company-auctex auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window)))
+    (org-brain evil-org gmail-message-mode ham-mode html-to-markdown flymd edit-server swiper smartparens evil helm helm-core ivy ghub async projectile dash org-mime packed white-sand-theme rebecca-theme exotica-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode rjsx-mode toml-mode racer pos-tip cargo rust-mode fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-restclient know-your-http-well company-auctex auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window)))
  '(send-mail-function (quote mailclient-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
