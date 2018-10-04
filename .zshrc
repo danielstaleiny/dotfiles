@@ -101,7 +101,11 @@ export PATH=~/.local/bin:$PATH
 export PATH=~/.gem/ruby/2.5.0/bin:$PATH
 export PATH=~/.nix-profile/bin:$PATH
 export PATH=~/env/bin:$PATH
-export PATH=~/env/lib/python3.7/site-packages:$PATH
+#export PATH=~/env/lib/python3.7/site-packages:$PATH
+
+PATH="$HOME/.node_modules/bin:$PATH"
+export npm_config_prefix=~/.node_modules
+
 
 
 alias prod='ssh daniel@collageofficial.com'
@@ -116,5 +120,8 @@ alias vpnup='wg-quick up mullvad-se1'
 alias vpndown='wg-quick down mullvad-se1'
 alias example='tldr -t base16'
 alias r='ranger'
+alias h='ghc -dynamic'
+alias p='sudo pacman'
+alias y='yaourt'
 export LD_LIBRARY_PATH=/usr/lib32/nvidia:/usr/lib/nvidia:$LD_LIBRARY_PATH
 
