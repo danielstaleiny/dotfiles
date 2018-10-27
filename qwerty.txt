@@ -1,0 +1,145 @@
+* Layout for dvorak
+* Mappings
+*
+* swap positions
+*
+* arrow up -> arrow down
+* arrow down -> arrow up
+
+* += -> ~`
+* ~` -> =+
+
+* \| -> [{
+* [{ -> \|
+
+* -_ -> [{
+* [{ -> -_
+* ]} -> +=
+* =+ -_> ]}
+
+* change thump cluster ta have brackets
+* ( -> HOME
+* ) -> Page up
+* Use macro for this swap
+* { -> End
+* } -> Page down
+* [ -> shift End
+* ] -> shift Page down
+
+* left alt -> Delete
+* delete -> left alt
+* left alt -> right ctrl
+* left ctrl -> right alt
+
+* Macro to left \|
+* left alt + s
+* [press]>[renders]
+* start functionality
+{intl-\}>{speed4}{-lwin}{s}{+lwin}
+
+[up]>[down]
+[down]>[up]
+
+* [home]>[9]
+* [pup]>[0]
+
+{home}>{speed4}{-lshift}{9}{+lshift}
+{lshift}{home}>{speed4}{9}
+{rshift}{home}>{speed4}{9}
+
+{pup}>{speed4}{-lshift}{0}{+lshift}
+{lshift}{pup}>{speed4}{0}
+{rshift}{pup}>{speed4}{0}
+
+* - is hyphen
+
+{end}>{speed4}{-lshift}{hyphen}{+lshift}
+{lshift}{end}>{speed4}{hyphen}
+{rshift}{end}>{speed4}{hyphen}
+
+{=}>{speed4}{-lshift}{pdown}{+lshift}
+{lshift}{=}>{speed4}{pdown}
+{rshift}{=}>{speed4}{pdown}
+
+* [end]>[hyphen]
+* [pdown]>[=]
+
+[`]>[=]
+[=]>[`]
+
+[\]>[obrack]
+[obrack]>[\]
+[hyphen]>[cbrack]
+[cbrack]>[hyphen]
+
+[lctrl]>[lwin]
+[delete]>[lctrl]
+[lwin]>[delete]
+
+
+[rctrl]>[lwin]
+[ralt]>[rctrl]
+
+
+
+
+
+
+** qwerty on kinesis, dvorak in OS
+* change around arrows, to match dvorak movement. cvjp -> hjkl
+[up]>[left]
+[down]>[right]
+[left]>[down]
+[right]>[up]
+
+* custome, open launcher shortcut. 
+{intl-\}>{speed9}{-lalt}{;}{+lalt}
+
+* ( on home key
+{home}>{speed9}{-lshift}{9}{+lshift}
+{lshift}{home}>{speed9}{9}
+{rshift}{home}>{speed9}{9}
+
+* ) on page up key
+{pup}>{speed9}{-lshift}{0}{+lshift}
+{lshift}{pup}>{speed9}{0}
+{rshift}{pup}>{speed9}{0}
+
+* delete -> ctrl
+* ctrl -> alt
+* alt -> delete
+* I use more often ctrl or alt than delete
+[lctrl]>[lalt]
+[delete]>[lctrl]
+[lalt]>[delete]
+
+* usability
+[ralt]>[lalt]
+[rwin]>[lalt]
+
+* consitent command key with regular keyboards
+[`]>[=]
+[=]>[`]
+
+* shortcut to switch desktop window.
+{lctrl}{up}>{speed9}{-lctrl}{-lalt}{c}{+lalt}{+lctrl}
+{lctrl}{down}>{speed9}{-lctrl}{-lalt}{v}{+lalt}{+ctrl}
+
+* [{ on the end key
+{end}>{speed9}{hyphen}
+{lshift}{end}>{speed9}{-lshift}{hyphen}{+lshift}
+{rshift}{end}>{speed9}{-lshift}{hyphen}{+lshift}
+{rshift}{lshift}{end}>{speed9}{-lshift}{hyphen}{+lshift}
+
+* ]} on the page down key
+{pdown}>{speed9}{=}
+{lshift}{pdown}>{speed9}{-lshift}{=}{+lshift}
+{rshift}{pdown}>{speed9}{-lshift}{=}{+lshift}
+{rshift}{lshift}{pdown}>{speed9}{-lshift}{=}{+lshift}
+
+* more natural to have search key / than \ so I swap them.
+* better access for = instead of [ because I have it on thumb cluster anyway.
+[\]>[obrack]
+[obrack]>[\]
+[hyphen]>[cbrack]
+[cbrack]>[hyphen]
