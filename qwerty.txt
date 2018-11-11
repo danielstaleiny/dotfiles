@@ -92,7 +92,7 @@
 [left]>[down]
 [right]>[up]
 
-* custome, open launcher shortcut. 
+* custom, open launcher shortcut. 
 {intl-\}>{speed9}{-lalt}{;}{+lalt}
 
 * ( on home key
@@ -112,6 +112,7 @@
 [lctrl]>[lalt]
 [delete]>[lctrl]
 [lalt]>[delete]
+[lwin]>[delete]
 
 * usability
 [ralt]>[lalt]
