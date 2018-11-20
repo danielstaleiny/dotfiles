@@ -3,3 +3,6 @@
 /*/node_modules
 /*/bower_components
 /*/vendor
+/*/.yarn_lock.json
+/*/.package_lock.json
+/*/logs.txt

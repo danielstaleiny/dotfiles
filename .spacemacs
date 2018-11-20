@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(haskell
+     (haskell :variables haskell-enable-hindent-style "johan-tibell")
      python
      sql
      php
@@ -55,6 +56,7 @@ values."
      themes-megapack
      ivy
      auto-completion
+     (haskell :variables haskell-completion-backend 'intero)
      ;; better-defaults
      emacs-lisp
      ;; git
@@ -75,6 +77,9 @@ values."
                                       yasnippet
                                       prettier-js
                                       rjsx-mode
+                                      intero
+                                      company-ghci
+                                      hindent
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
