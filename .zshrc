@@ -121,7 +121,10 @@ alias vpndown='wg-quick down mullvad-se1'
 alias example='tldr -t base16'
 alias r='ranger'
 alias h='ghc -dynamic'
-alias p='sudo pacman'
+alias pac='sudo pacman'
 alias y='yaourt'
+alias cat='bat'
+alias psc='psc-package'
+alias p='pulp --psc-package'
 export LD_LIBRARY_PATH=/usr/lib32/nvidia:/usr/lib/nvidia:$LD_LIBRARY_PATH
 
