@@ -107,6 +107,7 @@ PATH="$HOME/.node_modules/bin:$PATH"
 export npm_config_prefix=~/.node_modules
 
 
+export LD_LIBRARY_PATH=/usr/lib32/nvidia:/usr/lib/nvidia:$LD_LIBRARY_PATH
 
 alias prod='ssh daniel@collageofficial.com'
 alias staging='ssh daniel@staging.collageofficial.com'
@@ -121,10 +122,11 @@ alias vpndown='wg-quick down mullvad-se1'
 alias example='tldr -t base16'
 alias r='ranger'
 alias h='ghc -dynamic'
-alias pac='sudo pacman'
+alias p='sudo pacman'
 alias y='yaourt'
 alias cat='bat'
 alias psc='psc-package'
-alias p='pulp --psc-package'
-export LD_LIBRARY_PATH=/usr/lib32/nvidia:/usr/lib/nvidia:$LD_LIBRARY_PATH
+alias pl='pulp --psc-package'
+alias d='docker'
+alias dc='docker-compose'
 

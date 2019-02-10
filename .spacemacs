@@ -30,7 +30,9 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(purescript
+   '(
+     ivy
+     purescript
      haskell
      (haskell :variables haskell-enable-hindent-style "johan-tibell")
      python
@@ -55,7 +57,6 @@ values."
      org
      ;;react
      themes-megapack
-     ivy
      auto-completion
      (haskell :variables haskell-completion-backend 'intero)
      ;; better-defaults
@@ -332,6 +333,48 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+(defcustom add-node-modules-path-debug nil
+  "Enable verbose output when non nil."
+  :type 'boolean)
+
+(defcustom add-node-modules-max-depth 20
+  "Max depth to look for node_modules."
+  :type 'integer)
+
+(defun add-node-modules-path ()
+  "Search the current buffer's parent directories for `node_modules/.bin`.
+Traverse the directory structure up, until reaching the user's home directory,
+ or hitting add-node-modules-max-depth.
+Any path found is added to the `exec-path'."
+  (interactive)
+  (let* ((default-dir (expand-file-name default-directory))
+         (file (or (buffer-file-name) default-dir))
+         (home (expand-file-name "~"))
+         (iterations add-node-modules-max-depth)
+         (root (directory-file-name (or (and (buffer-file-name) (file-name-directory (buffer-file-name))) default-dir)))
+         (roots '()))
+    (while (and root (> iterations 0))
+      (setq iterations (1- iterations))
+      (let ((bindir (expand-file-name "node_modules/.bin/" root)))
+        (when (file-directory-p bindir)
+          (add-to-list 'roots bindir)))
+      (if (string= root home)
+          (setq root nil)
+        (setq root (directory-file-name (file-name-directory root)))))
+    (if roots
+        (progn
+          (make-local-variable 'exec-path)
+          (while roots
+            (add-to-list 'exec-path (car roots))
+            (when add-node-modules-path-debug
+              (message (concat "added " (car roots) " to exec-path")))
+            (setq roots (cdr roots))))
+      (when add-node-modules-path-debug
+        (message (concat "node_modules/.bin not found for " file))))))
+
+(provide 'add-node-modules-path)
+
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -357,6 +400,8 @@ you should place your code here."
   (global-hl-line-mode -1)
   (global-subword-mode 1)
   (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("pages\\/.*\\.js\\'" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("src\\/.*\\.js\\'" . rjsx-mode))
   (setq-default evil-escape-key-sequence nil)
   (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.5.0/bin") exec-path))
 
@@ -368,8 +413,10 @@ you should place your code here."
   (setq-default js2-basic-offset 4)
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode)
+  (add-hook 'js2-mode-hook 'add-node-modules-path)
+  (add-hook 'web-mode-hook 'add-node-modules-path)
   (global-set-key (kbd "C-SPC") 'hippie-expand)
-  (spacemacs/enable-transparency)
+  ;; (spacemacs/enable-transparency)
   ;; (setq ac-auto-start nil)
   (setq ac-auto-show-menu nil)
   (add-hook 'after-init-hook 'global-company-mode)
@@ -449,12 +496,10 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (psci purescript-mode psc-ide yapfify sql-indent pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode intero flycheck hy-mode hlint-refactor hindent haskell-snippets cython-mode company-ghci company-ghc ghc haskell-mode company-cabal company-anaconda cmm-mode anaconda-mode pythonic gmail-message-mode ham-mode html-to-markdown flymd edit-server swiper smartparens evil helm helm-core ivy ghub async projectile dash org-mime packed white-sand-theme rebecca-theme exotica-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode rjsx-mode toml-mode racer pos-tip cargo rust-mode fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-restclient know-your-http-well company-auctex auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window)))
- '(send-mail-function (quote mailclient-send-it))
- '(yas-snippet-dirs (quote ("/home/anon/.emacs.d/private/snippets/"))))
+    (writeroom-mode visual-fill-column treemacs-projectile treemacs-evil treemacs pfuture yapfify sql-indent pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode intero flycheck hy-mode hlint-refactor hindent haskell-snippets cython-mode company-ghci company-ghc ghc haskell-mode company-cabal company-anaconda cmm-mode anaconda-mode pythonic gmail-message-mode ham-mode html-to-markdown flymd edit-server swiper smartparens evil helm helm-core ivy ghub async projectile dash org-mime packed white-sand-theme rebecca-theme exotica-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode rjsx-mode toml-mode racer pos-tip cargo rust-mode fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-restclient know-your-http-well company-auctex auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window)))
+ '(send-mail-function (quote mailclient-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
