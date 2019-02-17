@@ -12,7 +12,7 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
-export EDITOR='emacs'
+export EDITOR='vim'
 export ARCHFLAGS="-arch x86_64"
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
@@ -28,6 +28,7 @@ function tldr() {
 
 export PATH=~/.local/bin:$PATH
 export PATH=~/.gem/ruby/2.5.0/bin:$PATH
+export PATH=~/.gem/ruby/2.6.0/bin:$PATH
 export PATH=~/.nix-profile/bin:$PATH
 export PATH=~/env/bin:$PATH
 #export PATH=~/env/lib/python3.7/site-packages:$PATH
@@ -57,4 +58,5 @@ alias psc='psc-package'
 alias pl='pulp --psc-package'
 alias d='docker'
 alias dc='docker-compose'
+alias el='eleventy'
 
