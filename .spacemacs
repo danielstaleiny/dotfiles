@@ -83,7 +83,6 @@ values."
                                       intero
                                       company-ghci
                                       hindent
-                                      super-save
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -376,7 +375,6 @@ Any path found is added to the `exec-path'."
 
 (provide 'add-node-modules-path)
 
-
   )
 
 (defun dotspacemacs/user-config ()
@@ -390,10 +388,6 @@ you should place your code here."
 
 
   (remove-hook 'js2-mode-hook 'tern-mode)
-  (super-save-mode +1)
-  (setq auto-save-default nil)
-  (setq super-save-remote-files nil)
-
 
   ;; (define-global-minor-mode global-hidden-mode-line-mode
   ;;   hidden-mode-line-mode ;; mode to be enabled
@@ -408,17 +402,43 @@ you should place your code here."
   (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
   (add-to-list 'auto-mode-alist '("pages\\/.*\\.js\\'" . rjsx-mode))
   (add-to-list 'auto-mode-alist '("src\\/.*\\.js\\'" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode))
   (setq-default evil-escape-key-sequence nil)
   (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.5.0/bin") exec-path))
+  (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.6.0/bin") exec-path))
 
 
   ;; Fixed jshint syntax cheking
-  (setq-default js2-global-externs '("Buffer" "beforeAll" "afterAll" "test" "module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
+  (setq-default js2-global-externs '("global","Buffer" "beforeAll" "afterAll" "test" "module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
 
   (setq-default js-indent-level 4)
   (setq-default js2-basic-offset 4)
+
+
+  (setq prettify-symbols-unprettify-at-point t)
+
+
+  (add-hook 'js2-mode-hook 'prettify-symbols-mode)
+
+
+
+  (add-hook 'js2-mode-hook
+            (lambda ()
+              (setq prettify-symbols-alist
+                    '(
+                      ("=>" . ?λ)
+                      ("function" . ?⨍)
+                      ))))
+
+
+  (add-hook 'purescript-mode-hook
+            (lambda ()
+              (push '("<<<" . ?∘) prettify-symbols-alist)))
+
+
+
+
   (add-hook 'js2-mode-hook 'prettier-js-mode)
-  (add-hook 'web-mode-hook 'prettier-js-mode)
   (add-hook 'js2-mode-hook 'add-node-modules-path)
   (add-hook 'web-mode-hook 'add-node-modules-path)
   (global-set-key (kbd "C-SPC") 'hippie-expand)
@@ -432,22 +452,29 @@ you should place your code here."
                                "~/todos.org"
                                ))
 
+	;; "* TODO %? %i %a")
   (setq org-capture-templates
-        '(("t" "todo" entry (file org-default-notes-file)
-	         "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-	        ("m" "Meeting" entry (file org-default-notes-file)
-	         "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
-	        ("d" "Diary" entry (file+datetree "~/org/diary.org")
-	         "* %?\n%U\n" :clock-in t :clock-resume t)
-	        ("i" "Idea" entry (file org-default-notes-file)
-	         "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
-	        ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
-	         "** NEXT %? \nDEADLINE: %t") ))
+        '(("t" "Todo" entry (file+headline "~/todos.org" "Tasks")
+	         "* TODO %A")
+          ))
+
+  (setq org-projectile-capture-template "* TODO %? %i %a")
+
+
+        ;; '(("t" "todo" entry (file org-default-notes-file)
+	      ;;    "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+	      ;;   ("m" "Meeting" entry (file org-default-notes-file)
+	      ;;    "* MEETING with %? :MEETING:\n%t" :clock-in t :clock-resume t)
+	      ;;   ("d" "Diary" entry (file+datetree "~/org/diary.org")
+	      ;;    "* %?\n%U\n" :clock-in t :clock-resume t)
+	      ;;   ("i" "Idea" entry (file org-default-notes-file)
+	      ;;    "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
+	      ;;   ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
+	      ;;    "** NEXT %? \nDEADLINE: %t") ))
 
   (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                    (org-agenda-files :maxlevel . 9))))
   (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
-
 
 
   ;; esc quits
@@ -502,13 +529,31 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (super-save yapfify sql-indent pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode intero flycheck hy-mode hlint-refactor hindent haskell-snippets cython-mode company-ghci company-ghc ghc haskell-mode company-cabal company-anaconda cmm-mode anaconda-mode pythonic gmail-message-mode ham-mode html-to-markdown flymd edit-server swiper smartparens evil helm helm-core ivy ghub async projectile dash org-mime packed white-sand-theme rebecca-theme exotica-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode rjsx-mode toml-mode racer pos-tip cargo rust-mode fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-restclient know-your-http-well company-auctex auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window)))
- '(psc-ide-add-import-on-completion t t)
- '(psc-ide-rebuild-on-save nil t)
+    (yasnippet-snippets psci purescript-mode pippel pipenv org-brain magit-svn kaolin-themes json-navigator hierarchy ivy-yasnippet ivy-xref ivy-purpose importmagic epc ctable concurrent deferred impatient-mode gitignore-templates eziam-theme evil-org transient counsel-css company-php ac-php-core xcscope yapfify sql-indent pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode intero flycheck hy-mode hlint-refactor hindent haskell-snippets cython-mode company-ghci company-ghc ghc haskell-mode company-cabal company-anaconda cmm-mode anaconda-mode pythonic gmail-message-mode ham-mode html-to-markdown flymd edit-server swiper smartparens evil helm helm-core ivy ghub async projectile dash org-mime packed white-sand-theme rebecca-theme exotica-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode rjsx-mode toml-mode racer pos-tip cargo rust-mode fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-restclient know-your-http-well company-auctex auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md indium websocket seq spaceline-all-the-icons prettier-js doom-themes company all-the-icons-dired all-the-icons memoize font-lock+ tablist orgit org-projectile org-category-capture org-present restclient ht alert log4e gntp skewer-mode simple-httpd json-snatcher json-reformat yasnippet multiple-cursors js2-mode haml-mode magit magit-popup git-commit with-editor paredit ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link yaml-mode xterm-color which-key wgrep web-mode web-beautify use-package tern tagedit smex smeargle slim-mode shell-pop scss-mode sass-mode ranger pug-mode pdf-tools pcre2el org-pomodoro org-download ob-restclient ob-http multi-term mu4e-maildirs-extension mu4e-alert magit-gitflow macrostep livid-mode less-css-mode json-mode js2-refactor js-doc ivy-hydra htmlize help-fns+ helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flx exec-path-from-shell evil-visualstar evil-magit evil-escape evil-cleverparens eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav csv-mode counsel-projectile coffee-mode bind-map auto-compile auctex ace-window)))
  '(send-mail-function (quote mailclient-send-it)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
+
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag evil-mc ace-jump-helm-line zenburn-theme zen-and-art-theme yasnippet-snippets yapfify yaml-mode xterm-color ws-butler writeroom-mode winum white-sand-theme which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-evil toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rjsx-mode reverse-theme restart-emacs request rebecca-theme ranger rainbow-delimiters railscasts-theme racer pytest pyenv-mode py-isort purple-haze-theme pug-mode psci professional-theme prettier-js popwin planet-theme pippel pipenv pip-requirements phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http noctilux-theme naquadah-theme nameless mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode live-py-mode link-hint light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ivy-yasnippet ivy-xref ivy-purpose ivy-hydra ir-black-theme intero inkpot-theme indent-guide importmagic impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-make hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md gandalf-theme fuzzy font-lock+ flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump drupal-mode dracula-theme dotenv-mode doom-themes doom-modeline django-theme diminish define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme csv-mode counsel-projectile counsel-css company-web company-tern company-statistics company-restclient company-php company-cabal company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clean-aindent-mode cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-link ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
