@@ -59,4 +59,5 @@ alias pl='pulp --psc-package'
 alias d='docker'
 alias dc='docker-compose'
 alias el='eleventy'
+alias pandocread='ag -o -l -g README.md | ./eachMarkdownToOrg.sh && echo "README.org" | entr -p ./pandoc.sh /_'
 

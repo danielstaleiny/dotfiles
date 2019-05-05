@@ -83,6 +83,7 @@ values."
                                       intero
                                       company-ghci
                                       hindent
+                                      psc-ide
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -399,9 +400,9 @@ you should place your code here."
   (setq js2-strict-missing-semi-warning nil)
   (global-hl-line-mode -1)
   (global-subword-mode 1)
-  (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("pages\\/.*\\.js\\'" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("src\\/.*\\.js\\'" . rjsx-mode))
+  ;; (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
+  ;; (add-to-list 'auto-mode-alist '("pages\\/.*\\.js\\'" . rjsx-mode))
+  ;; (add-to-list 'auto-mode-alist '("src\\/.*\\.js\\'" . rjsx-mode))
   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode))
   (setq-default evil-escape-key-sequence nil)
   (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.5.0/bin") exec-path))
@@ -409,7 +410,7 @@ you should place your code here."
 
 
   ;; Fixed jshint syntax cheking
-  (setq-default js2-global-externs '("global","Buffer" "beforeAll" "afterAll" "test" "module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
+  (setq-default js2-global-externs '("import" "global" "Buffer" "import" "beforeAll" "afterAll" "test" "module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "angular" "process" "describe" "should" "expect" "it" "be" "exports" "$"))
 
   (setq-default js-indent-level 4)
   (setq-default js2-basic-offset 4)
