@@ -105,6 +105,11 @@
 {lshift}{pup}>{speed9}{0}
 {rshift}{pup}>{speed9}{0}
 
+
+* usability
+[ralt]>[lalt]
+[rwin]>[lalt]
+
 * delete -> ctrl
 * ctrl -> alt
 * alt -> delete
@@ -114,9 +119,6 @@
 [lalt]>[delete]
 [lwin]>[delete]
 
-* usability
-[ralt]>[lalt]
-[rwin]>[lalt]
 
 * consitent command key with regular keyboards
 [`]>[=]

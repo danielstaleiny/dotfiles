@@ -13,6 +13,7 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
 export EDITOR='vim'
+export TERM=xterm-256color
 export ARCHFLAGS="-arch x86_64"
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
@@ -59,5 +60,7 @@ alias pl='pulp --psc-package'
 alias d='docker'
 alias dc='docker-compose'
 alias el='eleventy'
+alias dev='npm run dev'
 alias pandocread='ag -o -l -g README.md | ./eachMarkdownToOrg.sh && echo "README.org" | entr -p ./pandoc.sh /_'
+alias eduram='sudo ip link del docker_gwbridge'
 
