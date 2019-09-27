@@ -1,0 +1,3 @@
+progm+shift+esc -> to enable advance mod
+progm+F1 -> to make storage available
+format and copy files from kinesis folder
