@@ -30,7 +30,8 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(lua
+     nginx
      ivy
      purescript
      haskell
@@ -156,9 +157,11 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         oldlace
                          darktooth
+                         zenburn
+                         eziam-light
                          tao-yang
+                         oldlace
                          soft-stone
                          minimal
                          )
@@ -167,10 +170,11 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 14
+                               :size 15
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
+
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -390,16 +394,17 @@ you should place your code here."
 
   (remove-hook 'js2-mode-hook 'tern-mode)
 
-  ;; (define-global-minor-mode global-hidden-mode-line-mode
-  ;;   hidden-mode-line-mode ;; mode to be enabled
-  ;;   (lambda () (hidden-mode-line-mode) ;; function to enable mode
-  ;;     ))
-  ;; (global-hidden-mode-line-mode)
+  (define-global-minor-mode global-hidden-mode-line-mode
+    hidden-mode-line-mode ;; mode to be enabled
+    (lambda () (hidden-mode-line-mode) ;; function to enable mode
+      ))
+  (global-hidden-mode-line-mode)
 
   ;; (setq powerline-default-separator 'curve)
   (setq js2-strict-missing-semi-warning nil)
   (global-hl-line-mode -1)
   (global-subword-mode 1)
+
   ;; (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
   ;; (add-to-list 'auto-mode-alist '("pages\\/.*\\.js\\'" . rjsx-mode))
   ;; (add-to-list 'auto-mode-alist '("src\\/.*\\.js\\'" . rjsx-mode))
@@ -476,6 +481,76 @@ you should place your code here."
   (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                    (org-agenda-files :maxlevel . 9))))
   (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
+
+
+  ;; (setq zenburn-override-colors-alist
+  ;;       '(
+
+  ;;         ;; http://colllor.com/30343F
+  ;;         ;; - is darker
+  ;;         ;; + is lighter
+
+
+  ;;         ("zenburn-fg-1"     . "#cbd3e1")
+  ;;         ("zenburn-fg-05"    . "#d8dee9")
+  ;;         ("zenburn-fg"       . "#e5e9f0") ;; text
+  ;;         ("zenburn-fg+1"     . "#f2f4f8")
+  ;;         ("zenburn-fg+2"     . "#FFFFFD")
+
+  ;;         ("zenburn-bg-2"     . "#121317")
+  ;;         ("zenburn-bg-1"     . "#1a1d23")
+  ;;         ("zenburn-bg-08"    . "#23262F")
+  ;;         ("zenburn-bg-05"    . "#2c303a") ;; under numbers color
+  ;;         ("zenburn-bg"       . "#2c303a") ;; background color
+  ;;         ("zenburn-bg+05"    . "#2c303a")
+  ;;         ("zenburn-bg+1"     . "#2c303a") ;; side color border
+  ;;         ("zenburn-bg+2"     . "#2c303a")
+  ;;         ("zenburn-bg+3"     . "#4f5669")
+
+  ;;         ("zenburn-red-6"    . "#ff1f35")
+  ;;         ("zenburn-red-5"    . "#f42a3e")
+  ;;         ("zenburn-red-4"    . "#e93547")
+  ;;         ("zenburn-red-3"    . "#dd4050")
+  ;;         ("zenburn-red-2"    . "#d24b59")
+  ;;         ("zenburn-red-1"    . "#c75762")
+  ;;         ("zenburn-red"      . "#bf616a") ;; red text
+  ;;         ("zenburn-red+1"    . "#b06d74")
+  ;;         ("zenburn-red+2"    . "#a5787d")
+
+  ;;         ("zenburn-orange"   . "#bd8160")
+
+  ;;         ("zenburn-yellow-2" . "#dca22e")
+  ;;         ("zenburn-yellow-1" . "#e1b151")
+  ;;         ("zenburn-yellow"   . "#ebcb8b")
+
+  ;;         ("zenburn-green-5"  . "#6e9051")
+  ;;         ("zenburn-green-4"  . "#789d58")
+  ;;         ("zenburn-green-3"  . "#82a762")
+  ;;         ("zenburn-green-2"  . "#8dae6f")
+  ;;         ("zenburn-green-1"  . "#97b67c")
+  ;;         ("zenburn-green"    . "#a3be8c")
+  ;;         ("zenburn-green+1"  . "#8FB28F")
+  ;;         ("zenburn-green+2"  . "#9FC59F")
+  ;;         ("zenburn-green+3"  . "#acc497")
+  ;;         ("zenburn-green+4"  . "#b6cca4")
+
+  ;;         ("zenburn-cyan"     . "#89d0bA")
+
+  ;;         ("zenburn-blue+3"   . "#436689")
+  ;;         ("zenburn-blue+2"   . "#517aa4")
+  ;;         ("zenburn-blue+1"   . "#698fb5")
+  ;;         ("zenburn-blue"     . "#81a1c1")
+  ;;         ("zenburn-blue-1"   . "#92adc9")
+  ;;         ("zenburn-blue-2"   . "#9fb8d0")
+  ;;         ("zenburn-blue-3"   . "#adc2d7")
+  ;;         ("zenburn-blue-4"   . "#bbccdd")
+  ;;         ("zenburn-blue-5"   . "#c8d6e4")
+
+  ;;         ("zenburn-magenta"  . "#b48ead")
+  ;;         )
+  ;;       )
+  ;; (load-theme 'zenburn t)
+
 
 
   ;; esc quits

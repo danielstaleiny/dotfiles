@@ -27,12 +27,13 @@ function tldr() {
 }
 
 
+export PATH=~/env/lib/python3.7/site-packages/pip:$PATH
 export PATH=~/.local/bin:$PATH
 export PATH=~/.gem/ruby/2.5.0/bin:$PATH
 export PATH=~/.gem/ruby/2.6.0/bin:$PATH
 export PATH=~/.nix-profile/bin:$PATH
 export PATH=~/env/bin:$PATH
-#export PATH=~/env/lib/python3.7/site-packages:$PATH
+export PATH=~/env/lib/python3.7/site-packages:$PATH
 
 export PATH="$HOME/.node_modules/bin:$PATH"
 export npm_config_prefix=~/.node_modules
