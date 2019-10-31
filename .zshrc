@@ -1,44 +1,50 @@
-  export ZSH=/home/anon/.oh-my-zsh
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+export ZSH="/home/anon/.config/oh-my-zsh"
+
 ZSH_THEME="lambda-gitster"
 DISABLE_AUTO_TITLE="true"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
+# plugins=(git colored-man-pages vi-mode node)
+plugins=(git colored-man-pages node)
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+_comp_options+=(globdots)	
 
-source $ZSH/oh-my-zsh.sh
-export LANG=en_US.UTF-8
-export EDITOR='vim'
-export TERM=xterm-256color
-export ARCHFLAGS="-arch x86_64"
-export SSH_KEY_PATH="~/.ssh/rsa_id"
+# History in cache directory:
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.cache/zsh/history
 
-if [ $TILIX_ID ] | [ $VTE_VERSION ]; then
-    source /etc/profile.d/vte.sh
-fi
 
-tldr_path="$(which tldr)"
-function tldr() {
-	eval "$tldr_path" $@ "--color"
+# Use lf to switch directories and bind it to ctrl-o
+lfcd () {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp"
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+    fi
 }
 
+bindkey -s '^g' 'lfcd\n'
 
-export PATH=~/env/lib/python3.7/site-packages/pip:$PATH
-export PATH=~/.local/bin:$PATH
-export PATH=~/.gem/ruby/2.5.0/bin:$PATH
-export PATH=~/.gem/ruby/2.6.0/bin:$PATH
-export PATH=~/.nix-profile/bin:$PATH
-export PATH=~/env/bin:$PATH
-export PATH=~/env/lib/python3.7/site-packages:$PATH
+# Edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^f' edit-command-line
 
-export PATH="$HOME/.node_modules/bin:$PATH"
+#TLDR
+export TLDR_HEADER='magenta bold underline'
+export TLDR_QUOTE='italic'
+export TLDR_DESCRIPTION='green'
+export TLDR_CODE='red'
+export TLDR_PARAM='blue'
+
+
+export LANG=en_US.UTF-8
+
+
+
 export npm_config_prefix=~/.node_modules
-
-export LD_LIBRARY_PATH=/usr/lib32/nvidia:/usr/lib/nvidia:$LD_LIBRARY_PATH
 
 alias prod='ssh daniel@collageofficial.com'
 alias staging='ssh daniel@staging.collageofficial.com'
@@ -46,22 +52,22 @@ alias eatmybackyard='ssh daniel@eatmybackyard.dk'
 alias e='exit'
 alias cc='clear'
 alias gs='git status -sb'
-alias weather='curl "wttr.in/copenhagen?q"'
 alias grep='rg'
-alias vpnup='wg-quick up mullvad-se4'
-alias vpndown='wg-quick down mullvad-se4'
-alias example='tldr -t base16'
-alias r='ranger'
-alias h='ghc -dynamic'
-alias p='sudo pacman'
-alias y='yay'
+# alias vpnup='wg-quick up mullvad-se4'
+# alias vpndown='wg-quick down mullvad-se4'
+alias example='tldr'
+# alias h='ghc -dynamic'
+# alias p='sudo pacman'
+# alias y='yay'
+alias catt='/run/current-system/sw/bin/cat'
 alias cat='bat'
-alias psc='psc-package'
-alias pl='pulp --psc-package'
+# alias psc='psc-package'
+# alias pl='pulp --psc-package'
 alias d='docker'
 alias dc='docker-compose'
 alias el='eleventy'
 alias dev='npm run dev'
-alias pandocread='ag -o -l -g README.md | ./eachMarkdownToOrg.sh && echo "README.org" | entr -p ./pandoc.sh /_'
-alias eduram='sudo ip link del docker_gwbridge'
+# alias pandocread='ag -o -l -g README.md | ./eachMarkdownToOrg.sh && echo "README.org" | entr -p ./pandoc.sh /_'
 
+
+source $ZSH/oh-my-zsh.sh
