@@ -5,8 +5,10 @@
 !.agignore
 !.zshrc
 !qwerty.txt
+!kinesis
 !kinesis/**
 !.local/share/src
 !.local/share/bin
 !**/.gitkeep
+!.nixos
 !.nixos/**
