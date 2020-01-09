@@ -5,7 +5,8 @@
 !.agignore
 !.zshrc
 !qwerty.txt
-!kinesis/
-!kinesis/qwerty.txt
-!kinesis/state.txt
-!kinesis-notes.org
+!kinesis/**
+!.local/share/src
+!.local/share/bin
+!**/.gitkeep
+!.nixos/**
