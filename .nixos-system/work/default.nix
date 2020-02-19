@@ -22,6 +22,17 @@ in
 
   i18n.consoleFont = "latarcyrheb-sun32x24";
 
+
+
+  # SSD stuff
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 1;
+  };
+  services.fstrim.enable = true;
+
+  hardware.cpu.amd.updateMicrocode = true;
+  hardware.enableRedistributableFirmware = true;
+
   programs.sway.enable = true;
   programs.sway.extraSessionCommands = ''
    ## Tell toolkits to use wayland
@@ -32,6 +43,10 @@ in
    export SQL_VIDEODRIVER=wayland
    # Fix kirta and other egl using apps
    export LD_LIBRARY_PATH=/run/opengl-driver/lib
+   # makes redshift works
+   WLR_DRM_NO_ATOMIC=1 sway
+   # for gameees
+   SDL_VIDEODRIVER=wayland
 
   # Disable HiDPI scaling for X apps
    export GDK_SCALE=1
@@ -64,7 +79,6 @@ in
     zsh
     fzf
     #autojump
-	
     pmount
     ripgrep
     ripgrep-all
@@ -84,8 +98,13 @@ in
 	  # cage
 	  wayfire
 
-	  vim
+	  neovim
 	  emacs
+
+     nix-prefetch-git
+     pinentry-curses
+     pinentry-gnome
+     pass
 	  firefox
     chromium
     htop

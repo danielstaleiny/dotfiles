@@ -19,14 +19,10 @@ in
 
   time.timeZone = "Europe/Copenhagen"; # timezone
 
-
-
-
+  programs.gnupg.agent = { enable = true; enableSSHSupport = true;};
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-
-
 
   # set up deamon docker so user can create docker images etc.
   # add "docker" to usergroup
@@ -39,6 +35,9 @@ in
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.support32Bit = true;
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
 
 
   # desktop layouts
