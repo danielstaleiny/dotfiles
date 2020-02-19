@@ -12,3 +12,7 @@
 !**/.gitkeep
 !.nixos
 !.nixos/**
+!.nixos-system
+!.nixos-system/**
+.nixos-system/configuration.nix
+.nixos-system/hardware-configuration.nix

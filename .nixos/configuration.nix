@@ -1,4 +1,4 @@
-#
+# 
 { config, lib, pkgs, ... }:
 let
   url = "https://github.com/colemickens/nixpkgs-wayland/archive/master.tar.gz";
