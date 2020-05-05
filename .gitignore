@@ -14,5 +14,7 @@
 !.nixos/**
 !.nixos-system
 !.nixos-system/**
+!.doom
+!.doom/**
 .nixos-system/configuration.nix
 .nixos-system/hardware-configuration.nix
