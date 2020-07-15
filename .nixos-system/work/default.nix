@@ -20,9 +20,7 @@ in
 
   nixpkgs.overlays = [ waylandOverlay];
 
-  i18n.consoleFont = "latarcyrheb-sun32x24";
-
-
+  console.font = "latarcyrheb-sun32x24";
 
   # SSD stuff
   boot.kernel.sysctl = {

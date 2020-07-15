@@ -14,7 +14,13 @@ in
   networking.hostName = "box"; # Define your pc name.
   networking.networkmanager.enable = true; # takes care of internet, wifi
 
-  i18n.consoleKeyMap = "dvorak"; # default to dvorak for console
+  # networking.hosts = {
+  #   "0.0.0.0" = [ "www.reddit.com" "www.youtube.com" "news.ycombinator.com" "lobste.rs" ];
+  # };
+
+
+
+  console.keyMap = "dvorak"; # default to dvorak for console
   i18n.defaultLocale = "en_US.UTF-8";
 
   time.timeZone = "Europe/Copenhagen"; # timezone
@@ -29,7 +35,7 @@ in
   virtualisation.docker.enable = true;
 
   # Enable CUPS to print documents.
-  services.printing.enable = lib.mkDefault false;
+#  services.printing.enable = lib.mkDefault false;
 
 
   # Enable sound.
@@ -58,6 +64,7 @@ in
 	    "video"
 	    "sway"
       "docker"
+      "sync"
 	  ]; # Enable ‘sudo’ for the user.
   };
 
