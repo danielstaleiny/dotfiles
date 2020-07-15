@@ -31,6 +31,16 @@ in
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
+
+  services.syncthing.enable = true;
+  services.syncthing.openDefaultPorts = true;
+  services.syncthing.systemService = true;
+  services.syncthing.user = "anon";
+  services.syncthing.group = "wheel";
+  services.syncthing.dataDir = "/home/anon";
+
+  services.syncthing.declarative.devices = { server = { addresses = [ "tcp://ipv4TODO"]; id = "ID of device";}; };
+  services.syncthing.declarative.folders = { "~/share" = { devices = [ "server" ]; id = "secrets"; }; };
   programs.sway.enable = true;
   programs.sway.extraSessionCommands = ''
    ## Tell toolkits to use wayland
@@ -54,8 +64,8 @@ in
   programs.sway.extraPackages = with pkgs; [
 	  xwayland
 	  swaybg
-	  swayidle
-	  swaylock
+	  # swayidle
+	  # swaylock
 	  waybar
     #	i3status-rust
 	  gebaar-libinput
@@ -65,12 +75,14 @@ in
 	  oguri
 	  redshift-wayland
 	  slurp
-	  wf-config
-	  wf-recorder
+	  #wf-config
+	  # wf-recorder
 	  wl-clipboard
-	  wtype
+	  # wtype
     wofi
   ];
+
+
 
   environment.systemPackages = with pkgs; [
 	  wget
@@ -98,16 +110,20 @@ in
 
 	  neovim
 	  emacs
+    robo3t
+    # phantomjs
+    phantomjs2
 
-     nix-prefetch-git
-     pinentry-curses
-     pinentry-gnome
-     pass
+
+    nix-prefetch-git
+    pinentry-curses
+    pinentry-gnome
+    pass
 	  firefox
     chromium
     htop
     lollypop
-
+    steam
     alacritty #Terminal
     rofi #X11 Launcher
 
@@ -149,6 +165,7 @@ in
 
     gnome3.nautilus #file manager
     gnome3.eog
+    gotop
   ];
 
   fonts.fonts = with pkgs; [
