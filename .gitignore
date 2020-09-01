@@ -16,5 +16,8 @@
 !.nixos-system/**
 !.doom
 !.doom/**
+!.config/sway/.config
+!.config/rofi/.config
+!.config/rofi/themes/**
 .nixos-system/configuration.nix
 .nixos-system/hardware-configuration.nix
