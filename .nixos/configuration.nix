@@ -11,6 +11,35 @@ let
     ref = "master";
   });
   cachixpkgs = (import (builtins.fetchTarball { url = "https://cachix.org/api/v1/install"; }) {});
+  config = {
+    font = {
+      px = 20;
+      px-str = "20px";
+      pt = 14.5;
+      pt-str = "14.5";
+
+
+    };
+    color = {
+      bg = "#fbf8ef";
+      fg = "#111111";
+      white = "#ffffff";
+      black = "#111111";
+      red = "#df967c";
+      blue = "#004c7d";
+      blue2 = "#0082c2";
+      green = "#00a84c";
+      green2 = "#73bf42";
+      green3 = "#c2d72e";
+      brown = "#d7a86e";
+      brown2 = "#e1c297";
+      brown3 = "#eee1c5";
+      yellow = "#faa619";
+      orange = "#f57f1e";
+      red2 = "#eb1c23";
+      red3 = "#c2262b";
+    };
+  };
 in
 {
   imports =
@@ -99,6 +128,7 @@ in
       enable = true;
       config = null;
       extraConfig = builtins.readFile "/home/anon/.config/sway/.config";
+
       extraSessionCommands = ''
       export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
       export SDL_VIDEODRIVER=wayland
@@ -173,11 +203,11 @@ in
 
     gtk = {
       enable = true;
-      font.name = "Noto Sans Mono 16";
+      font.name = "Noto Sans Mono ${config.font.pt-str}";
       # iconTheme.name = "arc-icon-theme";
       # theme.name = "art-theme";
       iconTheme.name = "Adwaita";
-      theme.name = "Adwaita-dark";
+      theme.name = "Adwaita";
     };
 
     programs.alacritty = {
@@ -190,8 +220,8 @@ in
             lines = 0;
           };
           padding = {
-            x = 12;
-            y = 12;
+            x = 48;
+            y = 48;
           };
           dynamic_padding = true;
           decorations = "full";
@@ -214,7 +244,7 @@ in
             family = "Source Code Pro";
             style = "Medium Italic";
           };
-          size = 18.0;
+          size = config.font.px;
           offset = {
             x = 0;
             y = 0;
@@ -230,32 +260,32 @@ in
 
         colors= {
           primary = {
-            background = "0x282828";
-            foreground = "0xeaeaea";
+            background = config.color.bg;
+            foreground = config.color.fg;
           };
           cursor = {
-            text = "0x9ec400";
-            cursor = "0x9ec400";
+            text = config.color.fg;
+            cursor = config.color.red;
           };
           normal = {
-            black=   "0x000000";
-            red=     "0xd54e53";
-            green=   "0xb9ca4a";
-            yellow=  "0xe6c547";
-            blue=    "0x7aa6da";
-            magenta= "0xc397d8";
-            cyan=    "0x70c0ba";
-            white=   "0xeaeaea";
+            black=   config.color.black;
+            red=     config.color.red;
+            green=   config.color.green;
+            yellow=  config.color.yellow;
+            blue=    config.color.blue;
+            magenta= config.color.red2;
+            cyan=    config.color.blue2;
+            white=   config.color.red;
           };
           bright = {
-            black=   "0x666666";
-            red=     "0xff3334";
-            green=   "0x9ec400";
-            yellow=  "0xe7c547";
-            blue=    "0x7aa6da";
-            magenta= "0xb77ee0";
-            cyan=    "0x54ced6";
-            white=   "0xeaeaea";
+            black=   config.color.black;
+            red=     config.color.red;
+            green=   config.color.green;
+            yellow=  config.color.yellow;
+            blue=    config.color.blue;
+            magenta= config.color.red2;
+            cyan=    config.color.blue2;
+            white=   config.color.red;
           };
           indexed_colors = [];
         };
@@ -337,14 +367,22 @@ in
     programs.obs-studio.enable = true;
     programs.password-store.enable = true;
     programs.pazi.enable = true; # use Z to jump into directory
-    programs.rofi.enable = true;
-    # programs.rofi.font = "";
+
+
+    programs.rofi = {
+      enable = true;
+      extraConfig = builtins.readFile "/home/anon/.config/rofi/.config";
+      theme = ".config/rofi/themes/custome";
+      font = "Noto Sans Mono ${config.font.pt-str}";
+      # font = "EtBembo ${config.font.pt-str}";
+    };
+
     programs.ssh.enable = true;
     programs.texlive.enable = true;
     programs.zathura.enable = true;
     # qt.enable = true;
     # qt.platformTheme = "gtk";
-    services.flameshot.enable = true; # test if it works in wayland
+    # services.flameshot.enable = true; # test if it works in wayland
     services.fluidsynth.enable = true;
     # services.mpd.enable = true; # maybe nice music player in background
     # services.mpdris2.enable = true;
@@ -388,24 +426,6 @@ in
   # $ nix search wget
   #
 
-  # programs.sway.enable = true;
-  # programs.sway.extraSessionCommands = ''
-  #  ## Tell toolkits to use wayland
-  #  export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-  #  export CLUTTER_BACKEND=wayland
-  #  #export QT_QPA_PLATFORM=wayland-egl
-  #  export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-  #  export SQL_VIDEODRIVER=wayland
-  #  # Fix kirta and other egl using apps
-  #  export LD_LIBRARY_PATH=/run/opengl-driver/lib
-  #  WLR_DRM_NO_ATOMIC=1 sway
-  #  # for gameees
-  #  SDL_VIDEODRIVER=wayland
-
-  # # Disable HiDPI scaling for X apps
-  #  export GDK_SCALE=1
-  #  export QT_AUTO_SCREEN_SCALE_FACTOR=0
-  # '';
 
   # programs.sway.extraPackages = with pkgs; [
 	#   xwayland
@@ -443,6 +463,7 @@ in
     liberation_ttf
     fira-code
     fira-code-symbols
+    etBook
   ];
 
   fonts.fonts = with pkgs; [
@@ -453,6 +474,7 @@ in
     liberation_ttf
     fira-code
     fira-code-symbols
+    etBook
   ];
 
 
