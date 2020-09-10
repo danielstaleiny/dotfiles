@@ -271,7 +271,7 @@ in
             black=   config.color.black;
             red=     config.color.red;
             green=   config.color.green;
-            yellow=  config.color.yellow;
+            yellow=  config.color.orange;
             blue=    config.color.blue;
             magenta= config.color.red2;
             cyan=    config.color.blue2;
@@ -281,7 +281,7 @@ in
             black=   config.color.black;
             red=     config.color.red;
             green=   config.color.green;
-            yellow=  config.color.yellow;
+            yellow=  config.color.orange;
             blue=    config.color.blue;
             magenta= config.color.red2;
             cyan=    config.color.blue2;
@@ -328,6 +328,8 @@ in
       };
     };
     programs.bat.enable = true; # like cat
+    programs.bat.config = {theme = "TwoDark";};
+
     programs.beets.enable = true; # get music info
     programs.broot.enable = true; # ranger alternative, dir visualizer
     programs.browserpass.enable = true;
