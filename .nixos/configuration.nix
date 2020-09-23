@@ -7,7 +7,7 @@ let
   datadir = "${schema}/share/gsettings-schemas/${schema.name}";
   home-manager = (builtins.fetchGit {
     url = "https://github.com/rycee/home-manager.git";
-    rev = "6cf6b587b575493e7718bf08b209013d7dcf4d58"; 
+    rev = "8a160f01abe97e86a89f0312ef4046ca7656f207";
     ref = "master";
   });
   cachixpkgs = (import (builtins.fetchTarball { url = "https://cachix.org/api/v1/install"; }) {});
@@ -50,7 +50,21 @@ in
   nix.extraOptions = ''
     keep-outputs = true
     keep-derivations = true
+    experimental-features = nix-command
   '';
+
+
+  networking.hosts = {
+    "localhost" = ["l"];
+    "0.0.0.0" = [
+      "www.reddit.com"
+      "reddit.com"
+      "news.ycombinator.com"
+      "twitch.tv"
+      "www.twitch.tv"
+      "lobste.rs"
+    ];
+  };
 
   home-manager.users.anon = {pkgs, ...}: {
     nixpkgs.config.allowUnfree = true;
