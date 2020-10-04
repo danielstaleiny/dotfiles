@@ -105,5 +105,6 @@ if whence compdef>/dev/null; then
     zstyle ':completion::complete:pazi_cd:*:pazi-dirs' matcher 'l:|=* r:|=*'
 fi
 
+eval "$(direnv hook zsh)"
 
 source $ZSH/oh-my-zsh.sh

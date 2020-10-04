@@ -7,7 +7,7 @@ let
   datadir = "${schema}/share/gsettings-schemas/${schema.name}";
   home-manager = (builtins.fetchGit {
     url = "https://github.com/rycee/home-manager.git";
-    rev = "8a160f01abe97e86a89f0312ef4046ca7656f207";
+    rev = "abfb4cde51856dbee909f373b59cd941f51c2170";
     ref = "master";
   });
   cachixpkgs = (import (builtins.fetchTarball { url = "https://cachix.org/api/v1/install"; }) {});
@@ -50,19 +50,18 @@ in
   nix.extraOptions = ''
     keep-outputs = true
     keep-derivations = true
-    experimental-features = nix-command
   '';
-
+    # experimental-features = nix-command
 
   networking.hosts = {
-    "localhost" = ["l"];
+    "127.0.0.1" = ["l"];
     "0.0.0.0" = [
-      "www.reddit.com"
-      "reddit.com"
-      "news.ycombinator.com"
-      "twitch.tv"
-      "www.twitch.tv"
-      "lobste.rs"
+      # "www.reddit.com"
+      # "reddit.com"
+      # "news.ycombinator.com"
+      # "twitch.tv"
+      # "www.twitch.tv"
+      # "lobste.rs"
     ];
   };
 
@@ -338,7 +337,13 @@ in
           print_events = false;
           ref_test = false;
         };
-
+        key_bindings = [
+          {
+            key = "N";
+            mods = "Control";
+            action = "SpawnNewInstance";
+          }
+        ];
       };
     };
     programs.bat.enable = true; # like cat
@@ -351,7 +356,7 @@ in
     programs.chromium.enable = true;
     programs.direnv.enable = true;
     programs.direnv.enableNixDirenvIntegration = true;
-    services.lorri.enable = true;
+    # programs.direnv.enableZshIntegration = true; # this works only if the home-manager manages the zsh shell.
     programs.emacs.enable = true;
     # services.emacs.enable = true; # enable emacs deamon
     # programs.emacs.package = pkgs.emacs;
@@ -470,6 +475,7 @@ in
 	  vim
 	  firefox
     git
+    gnugrep
 
 
     #FONTS
