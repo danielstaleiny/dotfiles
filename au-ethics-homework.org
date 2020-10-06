@@ -1,1 +1,131 @@
 * Ethics in qualitative and quantitative research
+** - for _qualitative data_
+   - Their main point is to promote Thematic analysis as well appoarch to analyse data, while _documenting assumptions_.
+   - They provide clear guidelines for using _Thematic analysis_
+   - Highlighting pros and cons of using Thematic analysis, giving you idea when to use it and when not to use it. Or how to make sure that you are aware of dissadvantages and negate them.
+   - 
+
+*** 
+Qualitative approaches are incredibly
+diverse, complex and nuanced (Holloway
+and Todres, 2003), and thematic analysis
+should be seen as a foundational method
+for qualitative analysis. It is the first
+qualitative method of analysis that re-
+searchers should learn, as it provides core
+skills that will be useful for conducting
+many other forms of qualitative analysis.
+Indeed, Holloway and Todres (2003: 347)
+identify ‘thematizing meanings’ as one of a
+few shared generic skills across qualitative
+analysis. 2
+
+
+*** One of the benefits of thematic analysis is its flexibility.
+    What is it ?: 
+    - Thematic analysis is a method for identifying, analysing and reporting patterns (themes) within data. It minimally organizes and describes your data set in (rich) detail. However, frequently if goes further than this, and interprets various aspects of the research topic
+
+      They think that it is not as clear, and consistently used, so they want to set guidelines to be consistent in Thematic analysis.
+      
+      They are unhappy how are themes used in previous research, and claim that these are just biased made up themes from researchers and not backed up themes. They want to change this with their guidelines.
+      
+    Thematic analysis differs from other analytic methods that seek to describe patterns across qualitative data such as ‘thematic’ DA, thematic decomposition analysis, IPA and grounded theory. 5 Both IPA and grounded theory seek patterns in the data, but are theoretically bounded.
+
+Therefore, thematic analysis can be
+a method that works both to reflect reality
+and to unpick or unravel the surface of
+‘reality’. However, it is important that the
+theoretical position of a thematic analysis is
+made clear, as this is all too often left
+unspoken (and is then typically a realist
+account). Any theoretical framework carries
+with it a number of assumptions about the
+nature of the data, what they represent in
+terms of the ‘the world’, ‘reality’, and so
+forth. A good thematic analysis will make
+this transparent.
+
+** Choices needs to be explicit and transparent
+** What counts as a theme ? 
+   - A theme captures something important about the data in relation to the research question, and represents some level of patterned response or meaning within the data set.
+
+     Furthermore, the ‘keyness’ of a theme is
+not necessarily dependent on quantifiable
+measures  / but rather on whether it cap-
+tures something important in relation to
+the overall research question.
+
+*** For example:
+in Victoria’s research on representa-
+tions of lesbians and gay parents on 26
+talk shows (Clarke and Kitzinger, 2004),
+she identified six ‘key’ themes. These six
+themes were not necessarily the most pre-
+valent themes across the data set  / they
+appeared in between two and 22 of the 26
+talk shows  / but together they captured an
+important element of the way in which
+lesbians and gay men ‘normalize’ their
+families in talk show debates. In this in-
+stance, her thematic analysis was driven by
+this particular analytic question
+
+** A rich description of the data set *VS* a detailed account of one particular aspect
+  - if the field is under-reasearched or you want to give overview of whole dataset and identify themes out of them.
+  - If the focus is on answering questions you describe in details 1 theme and pinpoint interesting aspect.
+
+
+** Identifing themes/patterns in thematic analysis
+   - 1th: An inductive approach means the themes identified are strongly linked to the data themselves.
+     - It is a process of coding the data without trying to fit it into a preexisting coding frame, or the researchr's analytic preconceptions.
+   - 2th: An theoretical thematic analysis tend to be driven by the researcher's theoretical or analytic interest in the area, and is thus more explicitly analyst-driven.
+
+* GUIDELINES
+** 1. *Familiarizing yourself with your data:*
+   Transcribing data (if necessary), reading and re-reading the data, noting down initial ideas.
+** 2. *Generating initial codes*:
+   Coding interesting features of the data in a systematic fashion across the entire data set, collating data relevant to each code.
+** 3. *Searching for themes*:
+   Collating codes into potential themes, gathering all data relevant to each potential theme.
+** 4. *Reviewing themes*:
+   Checking if the themes work in relation to the coded extracts (Level 1) and the entire data set (Level 2), generating a thematic ‘map’ of the analysis.
+** 5. *Defining and naming themes*:
+   Ongoing analysis to refine the specifics of each theme, and the overall story the analysis tells, generating clear definitions and names for each theme.
+** 6. *Producing the report*:
+   The final opportunity for analysis. Selection of vivid, compelling extract examples, final analysis of selected extracts, relating back of the analysis to the research question and literature, producing a scholarly report of the analysis.
+
+   
+* Pitfalls to avaid when doing thematic analysis
+  - Don't forget to analyse data
+  - Do not use too much overlapping themes
+  - Be explicit
+  - Don't repeat what is in the data, explain and show what it may be or it is indicating.
+
+* Checklist of *Good* Thematic analysis
+| Transcription  |  1 | The data have been transcribed to an appropriate level of detail, and the transcripts have been checked against the tapes for ‘accuracy’.                                                                                                                                                                                                                                                                  |
+| Coding         |  2 | Each data item has been given equal attention in the coding process.                                                                                                                                                                                                                                                                                                                                       |
+|                |  3 | Themes have not been generated from a few vivid examples (an anecdotal approach), but instead the coding process has been thorough, inclusive and comprehensive.but instead the coding process has been thorough, inclusive and comprehensive.but instead the coding process has been thorough, inclusive and comprehensive.but instead the coding process has been thorough, inclusive and comprehensive. |
+|                |  4 | All relevant extracts for all each theme have been collated.                                                                                                                                                                                                                                                                                                                                               |
+|                |  5 | Themes have been checked against each other and back to the original data set.                                                                                                                                                                                                                                                                                                                             |
+|                |  6 | Themes are internally coherent, consistent, and distinctive.                                                                                                                                                                                                                                                                                                                                               |
+| Analysis       |  7 | Data have been analysed / interpreted, made sense of / rather than just paraphrased or described.                                                                                                                                                                                                                                                                                                          |
+|                |  8 | Analysis and data match each other / the extracts illustrate the analytic claims.                                                                                                                                                                                                                                                                                                                          |
+|                |  9 | Analysis tells a convincing and well-organized story about the data and topic.                                                                                                                                                                                                                                                                                                                             |
+|                | 10 | A good balance between analytic narrative and illustrative extracts is provided.                                                                                                                                                                                                                                                                                                                           |
+| Overall        | 11 | Enough time has been allocated to complete all phases of the analysis adequately, without rushing a phase or giving it a once-over-lightly.                                                                                                                                                                                                                                                                |
+| Written report | 12 | The assumptions about, and specific approach to, thematic analysis are clearly explicated.                                                                                                                                                                                                                                                                                                                 |
+|                | 13 | There is a good fit between what you claim you do, and what you show you have done / ie, described method and reported analysis are consistent                                                                                                                                                                                                                                                             |
+|                | 14 | The language and concepts used in the report are consistent with the epistemological position of the analysis.                                                                                                                                                                                                                                                                                             |
+|                | 15 | The researcher is positioned as active in the research process; themes do not just ‘emerge’.                                                                                                                                                                                                                                                                                                               |
+
+* Benefits of Thematic analysis
+  - Flexibility. 
+  - Relatively easy and quick method to learn, and do.
+  - Accessible to researchers with little or no experience of qualitative research.
+  - Results are generally accessible to educated general public.
+  - Useful method for working within participatory research paradigm, with participants as collaborators.
+  - Can usefully summarize key features of a large body of data, and/or offer a ‘thick description’ of the data set.
+  - Can highlight similarities and differences across the data set.
+  - Can generate unanticipated insights.
+  - Allows for social as well as psychological interpretations of data.
+  - Can be useful for producing qualitative analyses suited to informing policy development.
