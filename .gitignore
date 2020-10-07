@@ -26,3 +26,5 @@
 .nixos-system/configuration.nix
 .nixos-system/hardware-configuration.nix
 !au-ethics-homework.org
+!aau
+!aau/seminar.org
