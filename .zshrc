@@ -47,6 +47,7 @@ export LANG=en_US.UTF-8
 export npm_config_prefix=~/.node_modules
 
 alias prod='ssh daniel@collageofficial.com'
+alias teamspeak='QT_QPA_PLATFORM=xcb ts3client'
 alias staging='ssh daniel@staging.collageofficial.com'
 alias eatmybackyard='ssh daniel@eatmybackyard.dk'
 alias e='exit'
@@ -71,6 +72,7 @@ alias dc='docker-compose'
 alias el='eleventy'
 alias dev='npm run dev'
 # alias pandocread='ag -o -l -g README.md | ./eachMarkdownToOrg.sh && echo "README.org" | entr -p ./pandoc.sh /_'
+alias stream-up="echo 'sudo modprobe v4l2loopback exclusive_caps=1' && sudo modprobe v4l2loopback exclusive_caps=1"
 
 __pazi_add_dir() {
     pazi visit "${PWD}"

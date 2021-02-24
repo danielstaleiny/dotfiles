@@ -35,7 +35,7 @@
 * left alt + s
 * [press]>[renders]
 * start functionality
-{intl-\}>{speed4}{-lwin}{s}{+lwin}
+
 
 [up]>[down]
 [down]>[up]
@@ -43,23 +43,23 @@
 * [home]>[9]
 * [pup]>[0]
 
-{home}>{speed4}{-lshift}{9}{+lshift}
-{lshift}{home}>{speed4}{9}
-{rshift}{home}>{speed4}{9}
+{home}>{speed9}{-lshift}{9}{+lshift}
+{lshift}{home}>{speed9}{9}
+{rshift}{home}>{speed9}{9}
 
-{pup}>{speed4}{-lshift}{0}{+lshift}
-{lshift}{pup}>{speed4}{0}
-{rshift}{pup}>{speed4}{0}
+{pup}>{speed9}{-lshift}{0}{+lshift}
+{lshift}{pup}>{speed9}{0}
+{rshift}{pup}>{speed9}{0}
 
 * - is hyphen
 
-{end}>{speed4}{-lshift}{hyphen}{+lshift}
-{lshift}{end}>{speed4}{hyphen}
-{rshift}{end}>{speed4}{hyphen}
+{end}>{speed9}{-lshift}{hyphen}{+lshift}
+{lshift}{end}>{speed9}{hyphen}
+{rshift}{end}>{speed9}{hyphen}
 
-{=}>{speed4}{-lshift}{pdown}{+lshift}
-{lshift}{=}>{speed4}{pdown}
-{rshift}{=}>{speed4}{pdown}
+{=}>{speed9}{-lshift}{pdown}{+lshift}
+{lshift}{=}>{speed9}{pdown}
+{rshift}{=}>{speed9}{pdown}
 
 * [end]>[hyphen]
 * [pdown]>[=]
@@ -67,9 +67,9 @@
 [`]>[=]
 [=]>[`]
 
-[\]>[obrack]
+[\]>[cbrack]
 [obrack]>[\]
-[hyphen]>[cbrack]
+[hyphen]>[obrack]
 [cbrack]>[hyphen]
 
 [lctrl]>[lwin]
@@ -93,7 +93,7 @@
 [right]>[up]
 
 * custom, open launcher shortcut. 
-{intl-\}>{speed9}{-lalt}{;}{+lalt}
+[intl-\]>[lalt]
 
 * ( on home key
 {home}>{speed9}{-lshift}{9}{+lshift}
@@ -146,3 +146,7 @@
 [obrack]>[\]
 [hyphen]>[cbrack]
 [cbrack]>[hyphen]
+
+
+
+
