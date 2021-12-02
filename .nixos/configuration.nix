@@ -5,12 +5,29 @@ let
   # waylandOverlay = (import (builtins.fetchTarball url));
   schema = pkgs.gsettings-desktop-schemas;
   datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+  ip = import "/home/anon/work/daniel/wireguard-server-nixos-digititalocean-private/ip.nix";
   home-manager = (builtins.fetchGit {
     url = "https://github.com/rycee/home-manager.git";
-    rev = "abfb4cde51856dbee909f373b59cd941f51c2170";
+    rev = "de54d513c74bf8f4f3a58954b80b5f690639fe72";
     ref = "master";
   });
   cachixpkgs = (import (builtins.fetchTarball { url = "https://cachix.org/api/v1/install"; }) {});
+  rlang = pkgs.rWrapper.override{ packages = with pkgs.rPackages;[ggplot2 dplyr xts lattice tidyverse ggthemes]; };
+  custom-python = pkgs.python3.withPackages (ps: with ps; [
+    ipykernel
+    jupyterlab
+    matplotlib
+    numpy
+    pandas
+    seaborn
+    networkx
+    scipy
+    scikit-learn
+    Keras
+    tensorflow
+    conda
+  ]);
+
   config = {
     font = {
       px = 20;
@@ -21,10 +38,17 @@ let
 
     };
     color = {
-      bg = "#fbf8ef";
+
+      # fg = "#fbf8ef";
+      # bg = "#383838";
+      # black = "#fbf8ef";
+      # white = "#383838";
+
+      bg = "#f5f8f6";
       fg = "#111111";
       white = "#ffffff";
       black = "#111111";
+
       red = "#df967c";
       blue = "#004c7d";
       blue2 = "#0082c2";
@@ -35,11 +59,14 @@ let
       brown2 = "#e1c297";
       brown3 = "#eee1c5";
       yellow = "#faa619";
+      orangeSway = "#df967c";
       orange = "#f57f1e";
       red2 = "#eb1c23";
       red3 = "#c2262b";
+      gray = "#808080";
     };
   };
+
 in
 {
   imports =
@@ -47,23 +74,43 @@ in
       ./hardware-configuration.nix
       (import "${home-manager}/nixos")
     ];
+
+
+
+  # TODO remove this once flakes land in upstream
+  nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
     keep-outputs = true
     keep-derivations = true
+    experimental-features = nix-command flakes
   '';
-    # experimental-features = nix-command
 
   networking.hosts = {
     "127.0.0.1" = ["l"];
     "0.0.0.0" = [
       # "www.reddit.com"
       # "reddit.com"
+      # "www.instagram.com"
+      "teddit.net"
+      # "www.facebook.com"
       # "news.ycombinator.com"
       # "twitch.tv"
       # "www.twitch.tv"
-      # "lobste.rs"
+      "lobste.rs"
+      # # "youtube.com"
+      # # "www.youtube.com"
+      "9gag.com"
+      "www.9gag.com"
+      "mojevideo.sk"
+      # "dennikn.sk"
+      # "www.dennikn.sk"
+      # "www.pornhub.com"
+      "beeg.com"
     ];
   };
+
+
+
 
   home-manager.users.anon = {pkgs, ...}: {
     nixpkgs.config.allowUnfree = true;
@@ -74,13 +121,22 @@ in
       fzf
       unzip
       gnupg
+      sqlite
       autojump
       ncdu
       zeal
       wine
       playonlinux
-	    nix-prefetch-git
+      nix-prefetch-git
       pmount
+      coreutils
+      cmake
+      nixfmt
+      graphviz
+      aspell
+      shellcheck
+      fd
+      clang
       ripgrep
       ripgrep-all
       zim
@@ -91,16 +147,17 @@ in
 
       lf # like ranger
       tldr # man examples
-	    # cage
+      # cage
       lollypop
       #PROGRAMMING
       git
       nodejs
       python
+      custom-python
+      conda
       dhall
       docker-compose
       pandoc
-      # texlive.combined.scheme-full
       tectonic
       plantuml
       gdb
@@ -130,11 +187,40 @@ in
       atk
       at-spi2-atk
       xdg_utils
-      steam
-      steam-run
       gnome3.nautilus #file manager
       gnome3.eog
       qt5.qtwayland
+      pavucontrol
+      mongodb-compass
+      # manix
+      ffmpeg-full
+      notify-desktop
+      grim
+      slurp
+      wl-clipboard
+      wf-recorder
+      redshift-wlr
+      mpd
+      vimpc
+      unrar
+      texlive.combined.scheme-full
+      wireguard
+      wireguard-tools
+      qbittorrent
+      anki
+      gtypist
+      teamspeak_client
+      rlang
+      ssb-patchwork
+      tree
+      rstudio
+      poppler_utils
+      weechat
+      # polkit-kde-agent
+      gnome.gnome-screenshot
+      element-desktop
+      discord
+      (steam.override { extraPkgs = pkgs: with pkgs; [ pango harfbuzz libthai ];})
     ]);
 
     wayland.windowManager.sway = {
@@ -144,6 +230,8 @@ in
 
       extraSessionCommands = ''
       export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      export XDG_CURRENT_DESKTOP=sway
+      export XDG_SESSION_TYPE=wayland
       export SDL_VIDEODRIVER=wayland
       # needs qt5.qtwayland in systemPackages
       export QT_QPA_PLATFORM=wayland
@@ -155,11 +243,15 @@ in
       export LD_LIBRARY_PATH=/run/opengl-driver/lib
       export WLR_DRM_NO_ATOMIC=1 sway
       export GDK_SCALE=1
+      export MOZ_ENABLE_WAYLAND=1
       '';
     };
 
     # example for symlinking config files
     # home.file."foo".source = config.lib.file.mkOutOfStoreSymlink ./bar;
+
+
+
 
     programs.qutebrowser = {
       enable = true;
@@ -214,6 +306,7 @@ in
     };
 
 
+
     gtk = {
       enable = true;
       font.name = "Noto Sans Mono ${config.font.pt-str}";
@@ -221,6 +314,7 @@ in
       # theme.name = "art-theme";
       iconTheme.name = "Adwaita";
       theme.name = "Adwaita";
+      # theme.name = "Adwaita-dark";
     };
 
     programs.alacritty = {
@@ -288,7 +382,7 @@ in
             blue=    config.color.blue;
             magenta= config.color.red2;
             cyan=    config.color.blue2;
-            white=   config.color.red;
+            white=   config.color.gray;
           };
           bright = {
             black=   config.color.black;
@@ -298,7 +392,7 @@ in
             blue=    config.color.blue;
             magenta= config.color.red2;
             cyan=    config.color.blue2;
-            white=   config.color.red;
+            white=   config.color.gray;
           };
           indexed_colors = [];
         };
@@ -308,7 +402,7 @@ in
           double_click = { threshold = 300; };
           triple_click = { threshold = 300; };
           hide_when_typing =  true;
-          url = {
+          hints = {
             modifiers = "None";
           };
         };
@@ -355,19 +449,24 @@ in
     programs.browserpass.browsers = ["firefox"];
     programs.chromium.enable = true;
     programs.direnv.enable = true;
-    programs.direnv.enableNixDirenvIntegration = true;
+    programs.direnv.nix-direnv.enable = true;
     # programs.direnv.enableZshIntegration = true; # this works only if the home-manager manages the zsh shell.
     programs.emacs.enable = true;
     # services.emacs.enable = true; # enable emacs deamon
     # programs.emacs.package = pkgs.emacs;
-    # programs.emacs.extraPackages = "epkgs: [epkgs.magit]";
+    programs.emacs.extraPackages = epkgs: [
+      epkgs.sqlite3
+      epkgs.vterm
+      # epkgs.auctex-latexmk
+      epkgs.org-pdftools
+      ];
     programs.feh.enable = true;
     programs.fzf.enable = true;
 
 
-    # programs.git.enable = true;
-    # programs.git.userEmail = "daniel.rafaj@tuta.io";
-    # programs.git.userName = "Daniel Rafaj";
+    programs.git.enable = true;
+    programs.git.userEmail = "daniel.rafaj@tuta.io";
+    programs.git.userName = "Daniel Rafaj";
 
     programs.gpg.enable = true;
     services.gpg-agent.enable = true;
@@ -378,7 +477,19 @@ in
     programs.lesspipe.enable = true;
     programs.lf.enable = true; # like ranger
     programs.mako.enable = true; # supports styling
+    programs.mako.font = "EtBembo Italic 20.0";
     programs.mako.maxVisible = 3;
+    programs.mako.defaultTimeout = 5000; # in miliseconds
+    programs.mako.backgroundColor = config.color.bg;
+    programs.mako.textColor = config.color.fg;
+    programs.mako.borderColor = config.color.orangeSway;
+    programs.mako.borderSize = 4;
+    programs.mako.padding = "40,40,20,40";
+    programs.mako.margin = "25";
+    programs.mako.icons = false;
+    programs.mako.width = 500;
+    programs.mako.height = 500;
+    programs.mako.borderRadius = 0; # default 0
     programs.mpv.enable = true;
     programs.neovim.enable = true;
     programs.neovim.vimAlias = true;
@@ -386,38 +497,45 @@ in
     programs.neovim.withNodeJs = true;
     programs.noti.enable = true;
     programs.obs-studio.enable = true;
+    programs.obs-studio.plugins = [ pkgs.obs-studio-plugins.wlrobs];
+    # programs.obs-studio.plugins = [pkgs.obs-wlrobs pkgs.obs-v4l2sink];
     programs.password-store.enable = true;
     programs.pazi.enable = true; # use Z to jump into directory
 
 
     programs.rofi = {
       enable = true;
-      extraConfig = builtins.readFile "/home/anon/.config/rofi/.config";
-      theme = ".config/rofi/themes/custome";
+      # extraConfig = builtins.readFile "/home/anon/.config/rofi/.config";
+      theme = "custome";
       font = "Noto Sans Mono ${config.font.pt-str}";
       # font = "EtBembo ${config.font.pt-str}";
     };
 
     programs.ssh.enable = true;
-    programs.texlive.enable = true;
     programs.zathura.enable = true;
+    programs.zathura.options = {
+      default-bg = config.color.bg;
+      default-fg = config.color.fg;
+      recolor = true;
+      recolor-darkcolor = config.color.fg;
+      recolor-lightcolor = config.color.bg;
+      selection-clipboard = "clipboard";
+    };
     # qt.enable = true;
     # qt.platformTheme = "gtk";
     # services.flameshot.enable = true; # test if it works in wayland
-    services.fluidsynth.enable = true;
+    # services.fluidsynth.enable = true;
     # services.mpd.enable = true; # maybe nice music player in background
     # services.mpdris2.enable = true;
-    services.redshift.enable = true;
-    services.redshift.latitude = "48,15"; # Bratislava
-    services.redshift.longitude = "17,1166667";
-
-    # services.syncthing.enable = true; # synthing
     services.udiskie.enable = true;
 
-
-
+    services.gammastep.enable = true;
+    services.gammastep.latitude = "48.15";
+    services.gammastep.longitude = "17.1166667";
 
   };
+
+
 
   # nixpkgs.overlays = [ waylandOverlay];
   nixpkgs.config.allowUnfree = true;
@@ -436,7 +554,7 @@ in
 
   # Select internationalisation properties.
 
-  console.font = "latarcyrheb-sun32x24";
+  # console.font = "latarcyrheb-sun32x24";
   console.keyMap = "dvorak";
   i18n.defaultLocale = "en_US.UTF-8";
 
@@ -470,34 +588,70 @@ in
 
   # System packages accessable everywhere
   environment.systemPackages = with pkgs; [
-	  wget
+    wget
     zsh
-	  vim
-	  firefox
+    vim
+    firefox
     git
     gnugrep
-
+    mesa
+    vulkan-tools
+    vulkan-loader
+    vulkan-headers
+    vulkan-validation-layers
 
     #FONTS
-	  source-code-pro
-    noto-fonts-extra
-    noto-fonts-emoji
+    source-code-pro
     liberation_ttf
     fira-code
     fira-code-symbols
+    lato
+    montserrat
     etBook
-  ];
-
-  fonts.fonts = with pkgs; [
-	  source-code-pro
+    liberation_ttf
     noto-fonts
     noto-fonts-extra
     noto-fonts-emoji
+  ];
+
+  fonts.fonts = with pkgs; [
+    source-code-pro
     liberation_ttf
     fira-code
     fira-code-symbols
     etBook
+    lato
+    montserrat
+    liberation_ttf
+    noto-fonts
+    noto-fonts-extra
+    noto-fonts-emoji
   ];
+
+  programs.steam.enable = true;
+
+  # for sharing screen
+  services.pipewire.enable = true;
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ]; # sway
+
+
+  # services.syncthing.enable = false;
+  # services.syncthing.openDefaultPorts = true;
+  # services.syncthing.systemService = true;
+  # services.syncthing.user = "anon";
+  # services.syncthing.group = "wheel";
+  # services.syncthing.dataDir = "/home/anon";
+  # services.syncthing.declarative.devices = {
+  #   xps = { id = "THXJHNG-CKBJSV4-IXU5FCT-YAN55WF-BIEBUBX-NZTFNZK-MVOZUCR-QA2FCQQ";};
+  #   musicPi = { id = "4TZTBZM-PUZTL2V-XZX7WYU-SOVQRIM-D64Z3MA-DANZY4Y-VXFALR7-KAQG7QA";};
+  # };
+  # services.syncthing.declarative.folders = {
+  #   "~/share" = { devices = [ "xps" ]; id = "secrets"; };
+  #   "~/Music" = { devices = [ "musicPi" "xps" ]; id = "music"; };
+  # };
+
+
 
 
 
@@ -541,7 +695,8 @@ in
     enable = true;
     driSupport32Bit = true; # very important
     driSupport = true;
-    extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+    extraPackages = with pkgs; [amdvlk libva ];
+    extraPackages32 = with pkgs.driversi686Linux; [ mesa amdvlk ];
   };
 
 
@@ -563,19 +718,68 @@ in
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
+# networking.wireguard.interfaces = {
+#     # "wg0" is the network interface name. You can name the interface arbitrarily.
+#     wg0 = {
+#       # Determines the IP address and subnet of the client's end of the tunnel interface.
+#       ips = [ "10.0.0.2/24" ];
+#       listenPort = 51820; # to match firewall allowedUDPPorts (without this wg uses random port numbers)
+
+#       # Path to the private key file.
+#       #
+#       # Note: The private key can also be included inline via the privateKey option,
+#       # but this makes the private key world-readable; thus, using privateKeyFile is
+#       # recommended.
+#       privateKeyFile = "/home/anon/wireguard-keys/private";
+
+#       peers = [
+#         # For a client configuration, one peer entry for the server will suffice.
+
+#         {
+#           # Public key of the server (not a file path).
+#           publicKey = "S9wLwLW8l3j9lEHjvd1p6Tq2ZYwcrJ+DwS71yQZx+U0=";
+
+#           # Forward all the traffic via VPN.
+#           allowedIPs = [ "0.0.0.0/0" ];
+#           # Or forward only particular subnets
+#           #allowedIPs = [ "10.100.0.1" "91.108.12.0/22" ];
+
+#           # Set this to the server IP and port.
+#           endpoint = "${ip}:51820"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
+
+#           # Send keepalives every 25 seconds. Important to keep NAT tables alive.
+#           persistentKeepalive = 25;
+#         }
+#       ];
+#     };
+#   };
+
+
+
+
   # Open ports in the firewall.
+  # networking.firewall.allowedUDPPorts = [ 51820 ];
+  networking.firewall.enable = true;
   # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-  networking.firewall.enable = true;
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # services.printing.enable = true;
 
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.package = pkgs.pulseaudioFull;
+  hardware.pulseaudio.extraConfig = ''
+load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args="analog_gain_control=0\ digital_gain_control=1" source_name=echoCancel_source sink_name=echoCancel_sink
+set-default-source echoCancel_source
+set-default-sink echoCancel_sink
+'';
+
+
+  # services.avahi.enable = true;
+  # services.avahi.nssmdns = true;
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
@@ -591,6 +795,8 @@ in
   # services.xserver.desktopManager.plasma5.enable = true;
   # services.xserver.displayManager.lightdm.enable = true;
   # services.xserver.windowManager.i3.enable = true;
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "anon" ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.anon = {
@@ -604,12 +810,13 @@ in
 	    "video"
 	    "sway"
       "docker"
+      "vboxusers"
 	  ]; # Enable ‘sudo’ for the user.
   };
-  security.wrappers = {
-    pmount.source = "${pkgs.pmount}/bin/pmount";
-    pumount.source = "${pkgs.pmount}/bin/pumount";
-  };
+  # security.wrappers = {
+  #   pmount.source = "${pkgs.pmount}/bin/pmount";
+  #   pumount.source = "${pkgs.pmount}/bin/pumount";
+  # };
 
   security.sudo.configFile = ''
   Defaults rootpw

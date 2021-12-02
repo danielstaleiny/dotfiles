@@ -9,9 +9,13 @@
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.initrd.kernelModules = [ "amdgpu"];
+  boot.kernelModules = [ "kvm-amd"  ];
   boot.extraModulePackages = [ ];
+  hardware.opengl.extraPackages = with pkgs; [
+    rocm-opencl-icd
+    rocm-opencl-runtime
+  ];
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/9b4b8fd8-1043-41ce-92c8-2c1af62fb6cc";

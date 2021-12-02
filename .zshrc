@@ -71,6 +71,7 @@ alias d='docker'
 alias dc='docker-compose'
 alias el='eleventy'
 alias dev='npm run dev'
+alias fixENOSPS='sudo pkill -f node'
 # alias pandocread='ag -o -l -g README.md | ./eachMarkdownToOrg.sh && echo "README.org" | entr -p ./pandoc.sh /_'
 alias stream-up="echo 'sudo modprobe v4l2loopback exclusive_caps=1' && sudo modprobe v4l2loopback exclusive_caps=1"
 
