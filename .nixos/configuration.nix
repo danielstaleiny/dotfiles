@@ -5,28 +5,28 @@ let
   # waylandOverlay = (import (builtins.fetchTarball url));
   schema = pkgs.gsettings-desktop-schemas;
   datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-  ip = import "/home/anon/work/daniel/wireguard-server-nixos-digititalocean-private/ip.nix";
+  # ip = import "/home/anon/work/daniel/wireguard-server-nixos-digititalocean-private/ip.nix";
   home-manager = (builtins.fetchGit {
     url = "https://github.com/rycee/home-manager.git";
-    rev = "de54d513c74bf8f4f3a58954b80b5f690639fe72";
+    rev = "829e89a16f4f96428d1b94e68d4c06107b5491c0";
     ref = "master";
   });
   cachixpkgs = (import (builtins.fetchTarball { url = "https://cachix.org/api/v1/install"; }) {});
   rlang = pkgs.rWrapper.override{ packages = with pkgs.rPackages;[ggplot2 dplyr xts lattice tidyverse ggthemes]; };
-  custom-python = pkgs.python3.withPackages (ps: with ps; [
-    ipykernel
-    jupyterlab
-    matplotlib
-    numpy
-    pandas
-    seaborn
-    networkx
-    scipy
-    scikit-learn
-    Keras
-    tensorflow
-    conda
-  ]);
+  # custom-python = pkgs.python3.withPackages (ps: with ps; [
+  #   ipykernel
+  #   jupyterlab
+  #   matplotlib
+  #   numpy
+  #   pandas
+  #   seaborn
+  #   networkx
+  #   scipy
+  #   scikit-learn
+  #   Keras
+  #   tensorflow
+  #   conda
+  # ]);
 
   config = {
     font = {
@@ -134,6 +134,7 @@ in
       nixfmt
       graphviz
       aspell
+      aspellDicts.en
       shellcheck
       fd
       clang
@@ -153,7 +154,7 @@ in
       git
       nodejs
       python
-      custom-python
+      # custom-python
       conda
       dhall
       docker-compose
@@ -204,8 +205,6 @@ in
       vimpc
       unrar
       texlive.combined.scheme-full
-      wireguard
-      wireguard-tools
       qbittorrent
       anki
       gtypist
@@ -221,6 +220,14 @@ in
       element-desktop
       discord
       (steam.override { extraPkgs = pkgs: with pkgs; [ pango harfbuzz libthai ];})
+      dotnet-sdk_5
+      iptables
+      tcpdump
+      nm-tray
+      pavucontrol
+      vscode
+      wayvnc
+      gnome.vinagre
     ]);
 
     wayland.windowManager.sway = {
@@ -457,11 +464,13 @@ in
     programs.emacs.extraPackages = epkgs: [
       epkgs.sqlite3
       epkgs.vterm
-      # epkgs.auctex-latexmk
+      epkgs.auctex-latexmk
       epkgs.org-pdftools
       ];
     programs.feh.enable = true;
     programs.fzf.enable = true;
+
+    # programs.vscode.enable = true;
 
 
     programs.git.enable = true;
@@ -530,8 +539,14 @@ in
     services.udiskie.enable = true;
 
     services.gammastep.enable = true;
-    services.gammastep.latitude = "48.15";
-    services.gammastep.longitude = "17.1166667";
+    services.gammastep.latitude = "48.148598";
+    services.gammastep.longitude = "17.107748";
+    services.gammastep.temperature.day = 6500;
+    services.gammastep.settings.general.brightness-day = "1";
+    services.gammastep.temperature.night = 3700;
+    services.gammastep.settings.general.brightness-night = "0.7";
+
+    services.network-manager-applet.enable = true;
 
   };
 
@@ -599,6 +614,8 @@ in
     vulkan-loader
     vulkan-headers
     vulkan-validation-layers
+    wireguard
+    wireguard-tools
 
     #FONTS
     source-code-pro
@@ -795,22 +812,21 @@ set-default-sink echoCancel_sink
   # services.xserver.desktopManager.plasma5.enable = true;
   # services.xserver.displayManager.lightdm.enable = true;
   # services.xserver.windowManager.i3.enable = true;
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "anon" ];
+  # virtualisation.virtualbox.host.enable = true;
+  # users.extraGroups.vboxusers.members = [ "anon" ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.anon = {
     isNormalUser = true;
     extraGroups = [
 	    "wheel"
-	    "networkmanager"
 	    "input"
 	    "tty"
 	    "audio"
 	    "video"
 	    "sway"
       "docker"
-      "vboxusers"
+      # "vboxusers"
 	  ]; # Enable ‘sudo’ for the user.
   };
   # security.wrappers = {
