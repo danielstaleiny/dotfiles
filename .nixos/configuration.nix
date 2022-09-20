@@ -8,11 +8,11 @@ let
   # ip = import "/home/anon/work/daniel/wireguard-server-nixos-digititalocean-private/ip.nix";
   home-manager = (builtins.fetchGit {
     url = "https://github.com/rycee/home-manager.git";
-    rev = "829e89a16f4f96428d1b94e68d4c06107b5491c0";
+    rev = "688e5c85b7537f308b82167c8eb4ecfb70a49861";
     ref = "master";
   });
   cachixpkgs = (import (builtins.fetchTarball { url = "https://cachix.org/api/v1/install"; }) {});
-  rlang = pkgs.rWrapper.override{ packages = with pkgs.rPackages;[ggplot2 dplyr xts lattice tidyverse ggthemes]; };
+  # rlang = pkgs.rWrapper.override{ packages = with pkgs.rPackages;[ggplot2 dplyr xts lattice tidyverse ggthemes]; };
   # custom-python = pkgs.python3.withPackages (ps: with ps; [
   #   ipykernel
   #   jupyterlab
@@ -39,19 +39,27 @@ let
     };
     color = {
 
+# set $whatever #383838
+# set $black #fbf8ef
+# set $bg-unfocus #262626
+# set $green #26c96f
+# set $red #df967c
+# set $bg #383838
+# set $red2 #eb1c23
       # fg = "#fbf8ef";
-      # bg = "#383838";
-      # black = "#fbf8ef";
-      # white = "#383838";
+      fg = "#fbf1c7";
+      bg = "#383838";
+      black = "#fbf8ef";
+      white = "#383838";
 
-      bg = "#f5f8f6";
-      fg = "#111111";
-      white = "#ffffff";
-      black = "#111111";
+      # bg = "#f5f8f6";
+      # fg = "#111111";
+      # white = "#ffffff";
+      # black = "#111111";
 
       red = "#df967c";
-      blue = "#004c7d";
-      blue2 = "#0082c2";
+      blue = "#2d9ce5";
+      blue2 = "#d1c827";
       green = "#00a84c";
       green2 = "#73bf42";
       green3 = "#c2d72e";
@@ -75,8 +83,6 @@ in
       (import "${home-manager}/nixos")
     ];
 
-
-
   # TODO remove this once flakes land in upstream
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
@@ -84,9 +90,10 @@ in
     keep-derivations = true
     experimental-features = nix-command flakes
   '';
+  hardware.enableRedistributableFirmware = true;
+  hardware.cpu.amd.updateMicrocode = true;
 
   networking.hosts = {
-    "127.0.0.1" = ["l"];
     "0.0.0.0" = [
       # "www.reddit.com"
       # "reddit.com"
@@ -114,9 +121,11 @@ in
 
   home-manager.users.anon = {pkgs, ...}: {
     nixpkgs.config.allowUnfree = true;
+    home.stateVersion = "22.11";
     home.packages = []
       ++ (with cachixpkgs; [ cachix ])
       ++ (with pkgs; [
+      nvtop-amd
       gotop
       fzf
       unzip
@@ -125,8 +134,6 @@ in
       autojump
       ncdu
       zeal
-      wine
-      playonlinux
       nix-prefetch-git
       pmount
       coreutils
@@ -137,6 +144,7 @@ in
       aspellDicts.en
       shellcheck
       fd
+      qdirstat # disk usage utility
       clang
       ripgrep
       ripgrep-all
@@ -153,11 +161,15 @@ in
       #PROGRAMMING
       git
       nodejs
+      nodePackages.js-beautify
+      nodePackages.typescript-language-server
+      nodePackages.typescript
+      # deno
       python
       # custom-python
       conda
       dhall
-      docker-compose
+      # docker-compose
       pandoc
       tectonic
       plantuml
@@ -180,16 +192,22 @@ in
       glib
       pango  # fonts stuff
       arc-theme
+      arc-kde-theme
       arc-icon-theme
       adementary-theme
       gnome3.adwaita-icon-theme
+      libsForQt5.kcalc
       adwaita-qt
       # remove if they are not doing anything
       atk
       at-spi2-atk
       xdg_utils
       gnome3.nautilus #file manager
-      gnome3.eog
+      gnome3.gnome-disk-utility
+      gnome.pomodoro
+      libsForQt5.dolphin #file manager
+      libsForQt5.gwenview # image viewer
+      libsForQt5.ark
       qt5.qtwayland
       pavucontrol
       mongodb-compass
@@ -200,7 +218,6 @@ in
       slurp
       wl-clipboard
       wf-recorder
-      redshift-wlr
       mpd
       vimpc
       unrar
@@ -208,18 +225,29 @@ in
       qbittorrent
       anki
       gtypist
-      teamspeak_client
-      rlang
+      # teamspeak_client
+      # rlang
       ssb-patchwork
       tree
-      rstudio
+      # rstudio
       poppler_utils
       weechat
       # polkit-kde-agent
-      gnome.gnome-screenshot
+      libsForQt5.spectacle
+      libsForQt5.filelight
+      libsForQt5.breeze-icons
+      libsForQt5.kdegraphics-thumbnailers
+      libsForQt5.kimageformats
       element-desktop
-      discord
-      (steam.override { extraPkgs = pkgs: with pkgs; [ pango harfbuzz libthai ];})
+      # lutris
+      # discord
+      (steam.override {
+        extraPkgs = pkgs: with pkgs; [ pango harfbuzz libthai ];
+          # extraProfile = ''
+          #       unset VK_ICD_FILENAMES
+          #       export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json:/usr/share/vulkan/icd.d/radeon_icd.i686.json:${pkgs.amdvlk}/share/vulkan/icd.d/amd_icd64.json:${pkgs.driversi686Linux.amdvlk}/share/vulkan/icd.d/amd_icd32.json
+          #       '';
+      })
       dotnet-sdk_5
       iptables
       tcpdump
@@ -227,7 +255,7 @@ in
       pavucontrol
       vscode
       wayvnc
-      gnome.vinagre
+      nomacs
     ]);
 
     wayland.windowManager.sway = {
@@ -239,6 +267,7 @@ in
       export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
       export XDG_CURRENT_DESKTOP=sway
       export XDG_SESSION_TYPE=wayland
+      export GTK_USE_PORTAL=1
       export SDL_VIDEODRIVER=wayland
       # needs qt5.qtwayland in systemPackages
       export QT_QPA_PLATFORM=wayland
@@ -247,16 +276,20 @@ in
       export _JAVA_AWT_WM_NONREPARENTING=1
       export CLUTTER_BACKEND=wayland
       export SQL_VIDEODRIVER=wayland
-      export LD_LIBRARY_PATH=/run/opengl-driver/lib
+      # export LD_LIBRARY_PATH=/run/opengl-driver/lib
       export WLR_DRM_NO_ATOMIC=1 sway
+      # export WLR_RENDERER=vulkan # This is experimentation, works but sharing screen does not so far
       export GDK_SCALE=1
       export MOZ_ENABLE_WAYLAND=1
+      export WLR_DRM_DEVICES=/dev/dri/card0
       '';
     };
 
+
+
+
     # example for symlinking config files
     # home.file."foo".source = config.lib.file.mkOutOfStoreSymlink ./bar;
-
 
 
 
@@ -320,8 +353,8 @@ in
       # iconTheme.name = "arc-icon-theme";
       # theme.name = "art-theme";
       iconTheme.name = "Adwaita";
-      theme.name = "Adwaita";
-      # theme.name = "Adwaita-dark";
+      # theme.name = "Adwaita";
+      theme.name = "Adwaita-dark";
     };
 
     programs.alacritty = {
@@ -348,7 +381,7 @@ in
         font = {
           normal = {
             family = "Noto Sans Mono";
-            style = "Medium";
+            style = "Regular";
           };
           bold = {
             family = "Noto Sans Mono";
@@ -370,7 +403,7 @@ in
           use_thin_strokes = true;
         };
 
-        draw_bold_text_with_bright_colors = true;
+        # draw_bold_text_with_bright_colors = true;
 
         colors= {
           primary = {
@@ -389,21 +422,20 @@ in
             blue=    config.color.blue;
             magenta= config.color.red2;
             cyan=    config.color.blue2;
-            white=   config.color.gray;
+            white=   config.color.white;
           };
           bright = {
             black=   config.color.black;
             red=     config.color.red;
             green=   config.color.green;
             yellow=  config.color.orange;
-            blue=    config.color.blue;
+            blue=    config.color.blue2;
             magenta= config.color.red2;
             cyan=    config.color.blue2;
-            white=   config.color.gray;
+            white=   config.color.white;
           };
           indexed_colors = [];
         };
-        background_opacity = 1;
         mouse_bindings = [{ mouse =  "Middle"; action = "PasteSelection"; }];
         mouse = {
           double_click = { threshold = 300; };
@@ -515,23 +547,25 @@ in
     programs.rofi = {
       enable = true;
       # extraConfig = builtins.readFile "/home/anon/.config/rofi/.config";
-      theme = "custome";
+      theme = "custome-dark";
       font = "Noto Sans Mono ${config.font.pt-str}";
       # font = "EtBembo ${config.font.pt-str}";
     };
 
     programs.ssh.enable = true;
-    programs.zathura.enable = true;
-    programs.zathura.options = {
-      default-bg = config.color.bg;
-      default-fg = config.color.fg;
-      recolor = true;
-      recolor-darkcolor = config.color.fg;
-      recolor-lightcolor = config.color.bg;
-      selection-clipboard = "clipboard";
-    };
-    # qt.enable = true;
-    # qt.platformTheme = "gtk";
+    # programs.zathura.enable = true;
+    # programs.zathura.options = {
+    #   default-bg = config.color.bg;
+    #   default-fg = config.color.fg;
+    #   recolor = true;
+    #   recolor-darkcolor = config.color.fg;
+    #   recolor-lightcolor = config.color.bg;
+    #   selection-clipboard = "clipboard";
+    # };
+    qt.enable = true;
+    # qt.platformTheme = "gnome";
+    qt.style.package = pkgs.adwaita-qt;
+    qt.style.name = "Adwaita-dark";
     # services.flameshot.enable = true; # test if it works in wayland
     # services.fluidsynth.enable = true;
     # services.mpd.enable = true; # maybe nice music player in background
@@ -541,7 +575,7 @@ in
     services.gammastep.enable = true;
     services.gammastep.latitude = "48.148598";
     services.gammastep.longitude = "17.107748";
-    services.gammastep.temperature.day = 6500;
+    services.gammastep.temperature.day = 7500;
     services.gammastep.settings.general.brightness-day = "1";
     services.gammastep.temperature.night = 3700;
     services.gammastep.settings.general.brightness-night = "0.7";
@@ -600,22 +634,40 @@ in
 	#   wtype
   #   wofi
   # ];
+  #
+#   virtualisation = {
+#     libvirtd = {
+#       enable = true;
+#     };
+#   };
+#   users.groups.libvirtd.members = [ "root" "anon" ];
 
+# virtualisation.libvirtd.qemu.verbatimConfig = ''
+#     nvram = [ "${pkgs.OVMF}/FV/OVMF.fd:${pkgs.OVMF}/FV/OVMF_VARS.fd" ]
+#   '';
+#
+  #
   # System packages accessable everywhere
   environment.systemPackages = with pkgs; [
+    pciutils
+    # virt-manager
+    # qemu
+    # OVMF
     wget
+    i3
     zsh
     vim
     firefox
+    mesa
+    radeon-profile
     git
     gnugrep
-    mesa
     vulkan-tools
     vulkan-loader
     vulkan-headers
     vulkan-validation-layers
-    wireguard
     wireguard-tools
+    exfat
 
     #FONTS
     source-code-pro
@@ -649,8 +701,30 @@ in
 
   # for sharing screen
   services.pipewire.enable = true;
+  services.pipewire = {
+  alsa.enable = true;
+  alsa.support32Bit = true;
+  jack.enable = true;
+  pulse.enable = true;
+  socketActivation = true;
+  };
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ]; # sway
+  networking.wireguard.enable = true;
+
+  # services.xinetd.enable = true;
+  # services.xinetd.services.name = "test";
+
+# services.xinetd.enable = true;
+# services.xinetd.services = [
+#   { name = "test";
+#     unlisted = true;
+#     protocol = "tcp";
+#     port = 5000;
+#     server = "/usr/bin/env";
+#     extraConfig = "redirect = coaf-backend-clusterip.develop.svc.cluster.local 80";
+#   }
+# ];
 
 
   # services.syncthing.enable = false;
@@ -673,6 +747,7 @@ in
 
 
   virtualisation.docker.enable = true;
+
 
   # services.httpd =
   #   {
@@ -708,20 +783,42 @@ in
   #       ];
   #   };
 
+ # environment.variables.AMD_VULKAN_ICD = "RADV"; # force RADV otherwise amdvlk would be used
  hardware.opengl = {
     enable = true;
-    driSupport32Bit = true; # very important
     driSupport = true;
-    extraPackages = with pkgs; [amdvlk libva ];
-    extraPackages32 = with pkgs.driversi686Linux; [ mesa amdvlk ];
+    driSupport32Bit = true; # very important
+    extraPackages = with pkgs; [
+      rocm-opencl-icd
+      rocm-opencl-runtime
+      # amdvlk
+    ];
+    # extraPackages32 = with pkgs.driversi686Linux; [
+    #   amdvlk
+    # ];
   };
 
 
 
 
- services.dbus.packages = with pkgs; [ gnome3.dconf gnome2.GConf ];
  programs.dconf.enable = true; # for GNOME aps to accept themes
 
+
+
+
+
+
+ # networking.useDHCP = false;
+ # networking.interfaces.enp34s0.useDHCP = true;
+ # networking.iproute2.enable = true;
+ # networking.wireguard.enable = true;
+ # services.mullvad-vpn.enable = true;
+ # networking.nat.enable = true;
+ # networking.nat.externalInterface = "enp34s0";
+ # networking.nat.internalInterfaces = [ "wg0" ];
+ # networking.firewall = {
+ #   allowedUDPPorts = [ 51820 ];
+ # };
 
 
 
@@ -786,13 +883,13 @@ in
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.package = pkgs.pulseaudioFull;
-  hardware.pulseaudio.extraConfig = ''
-load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args="analog_gain_control=0\ digital_gain_control=1" source_name=echoCancel_source sink_name=echoCancel_sink
-set-default-source echoCancel_source
-set-default-sink echoCancel_sink
-'';
+#   hardware.pulseaudio.enable = true;
+#   hardware.pulseaudio.package = pkgs.pulseaudioFull;
+#   hardware.pulseaudio.extraConfig = ''
+# load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args="analog_gain_control=0\ digital_gain_control=1" source_name=echoCancel_source sink_name=echoCancel_sink
+# set-default-source echoCancel_source
+# set-default-sink echoCancel_sink
+# '';
 
 
   # services.avahi.enable = true;
@@ -800,6 +897,7 @@ set-default-sink echoCancel_sink
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "amdgpu" ];
   # services.xserver.layout = "dvorak,us,sk";
   # services.xserver.xkbVariant = ",,qwerty";
   # services.xserver.xkbOptions = "eurosign:e, caps:escape";
@@ -846,6 +944,6 @@ set-default-sink echoCancel_sink
   # servers. You should change this only after NixOS release notes say you
   # should.
   # system.autoUpgrade = true;
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "21.11"; # Did you read the comment?
 
 }

@@ -45,6 +45,9 @@ export LANG=en_US.UTF-8
 
 
 export npm_config_prefix=~/.node_modules
+export ENVIRONMENT=develop
+export ASPNETCORE_ENVIRONMENT=develop
+export CoafCompanyName=nordnet
 
 alias prod='ssh daniel@collageofficial.com'
 alias teamspeak='QT_QPA_PLATFORM=xcb ts3client'
@@ -57,8 +60,8 @@ alias ne='nixos-env'
 alias nr='sudo nixos-rebuild'
 alias gs='git status -sb'
 alias grep='rg'
-# alias vpnup='wg-quick up mullvad-se4'
-# alias vpndown='wg-quick down mullvad-se4'
+alias vpnup='sudo wg-quick up wg0'
+alias vpndown='sudo wg-quick down wg0'
 alias example='tldr'
 # alias h='ghc -dynamic'
 # alias p='sudo pacman'
@@ -68,7 +71,7 @@ alias cat='bat'
 # alias psc='psc-package'
 # alias pl='pulp --psc-package'
 alias d='docker'
-alias dc='docker-compose'
+alias dc='docker compose'
 alias el='eleventy'
 alias dev='npm run dev'
 alias fixENOSPS='sudo pkill -f node'
