@@ -8,7 +8,7 @@ let
   # ip = import "/home/anon/work/daniel/wireguard-server-nixos-digititalocean-private/ip.nix";
   home-manager = (builtins.fetchGit {
     url = "https://github.com/rycee/home-manager.git";
-    rev = "688e5c85b7537f308b82167c8eb4ecfb70a49861";
+    rev = "e1f1160284198a68ea8c7fffbbb1436f99e46ef9";
     ref = "master";
   });
   cachixpkgs = (import (builtins.fetchTarball { url = "https://cachix.org/api/v1/install"; }) {});
@@ -84,36 +84,33 @@ in
     ];
 
   # TODO remove this once flakes land in upstream
-  nix.package = pkgs.nixFlakes;
-  nix.extraOptions = ''
-    keep-outputs = true
-    keep-derivations = true
-    experimental-features = nix-command flakes
-  '';
+  # nix.package = pkgs.nixFlakes;
+  # nix.extraOptions = ''
+  #   keep-outputs = true
+  #   keep-derivations = true
+  #   experimental-features = nix-command flakes
+  # '';
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
 
   networking.hosts = {
     "0.0.0.0" = [
-      # "www.reddit.com"
+      "facebook.com"
+      "9gag.com"
+      "mojevideo.sk"
+      "4chan.org"
       # "reddit.com"
-      # "www.instagram.com"
-      "teddit.net"
-      # "www.facebook.com"
-      # "news.ycombinator.com"
+      # "www.reddit.com"
+      "instagram.com"
+      "www.instagram.com"
       # "twitch.tv"
       # "www.twitch.tv"
-      "lobste.rs"
-      # # "youtube.com"
-      # # "www.youtube.com"
-      "9gag.com"
-      "www.9gag.com"
-      "mojevideo.sk"
-      # "dennikn.sk"
-      # "www.dennikn.sk"
-      # "www.pornhub.com"
+      "news.ycombinator.com"
       "beeg.com"
+      "pornhub.com"
+      "www.pornhub.com"
     ];
+    # "10.0.144.198" = ["nordnet.pensure.coaf-backend-clusterip"];
   };
 
 
@@ -195,15 +192,15 @@ in
       arc-kde-theme
       arc-icon-theme
       adementary-theme
-      gnome3.adwaita-icon-theme
+      gnome.adwaita-icon-theme
       libsForQt5.kcalc
       adwaita-qt
       # remove if they are not doing anything
       atk
       at-spi2-atk
-      xdg_utils
-      gnome3.nautilus #file manager
-      gnome3.gnome-disk-utility
+      xdg-utils
+      gnome.nautilus #file manager
+      gnome.gnome-disk-utility
       gnome.pomodoro
       libsForQt5.dolphin #file manager
       libsForQt5.gwenview # image viewer
@@ -350,11 +347,11 @@ in
     gtk = {
       enable = true;
       font.name = "Noto Sans Mono ${config.font.pt-str}";
-      # iconTheme.name = "arc-icon-theme";
-      # theme.name = "art-theme";
-      iconTheme.name = "Adwaita";
+      iconTheme.name = "arc-icon-theme";
+      theme.name = "Arc-Dark";
+      # iconTheme.name = "Adwaita";
       # theme.name = "Adwaita";
-      theme.name = "Adwaita-dark";
+      # theme.name = "Adwaita-dark";
     };
 
     programs.alacritty = {
@@ -400,7 +397,6 @@ in
             x = 0;
             y = 0;
           };
-          use_thin_strokes = true;
         };
 
         # draw_bold_text_with_bright_colors = true;
@@ -832,6 +828,43 @@ in
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
+
+# networking.wireguard.interfaces = {
+#     wg0 = {
+#       ips = [ "10.13.13.9" ];
+#       listenPort = 51820; # to match firewall allowedUDPPorts (without this wg uses random port numbers)
+#       privateKey = "eC+2VkDqKqfAfxeJpU9JV6ZQCvgAynde+sppouEQDlA=";
+#       # dns = [ "10.0.0.10" ];
+#       peers = [
+#         {
+#           publicKey = "zkVLofVdYrJ4sAIhdHzGKZ34x25C5uDLvnQIXayS+iw=";
+
+#           allowedIPs = [ "0.0.0.0/0" ];
+#           endpoint = "168.63.109:51820"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
+#           # Send keepalives every 25 seconds. Important to keep NAT tables alive.
+#           persistentKeepalive = 25;
+#         }
+#       ];
+#     };
+#   };
+
+ # networking.wg-quick.interfaces = {
+ #    wg0 = {
+ #      address = [ "10.13.13.9" ];
+ #      dns = [ "10.0.0.10" ];
+ #      listenPort = 51820;
+ #      privateKey = "eC+2VkDqKqfAfxeJpU9JV6ZQCvgAynde+sppouEQDlA=";
+ #      peers = [
+ #        {
+ #          publicKey = "zkVLofVdYrJ4sAIhdHzGKZ34x25C5uDLvnQIXayS+iw=";
+ #          endpoint = "168.63.109.189:51820";
+ #          allowedIPs = [ "0.0.0.0/0"];
+ #          # persistentKeepalive = 25;
+ #        }
+ #      ];
+ #    };
+ #  };
+
 # networking.wireguard.interfaces = {
 #     # "wg0" is the network interface name. You can name the interface arbitrarily.
 #     wg0 = {
@@ -869,14 +902,54 @@ in
 #   };
 
 
+# boot.kernel.sysctl = {
+#     "net.ipv4.conf.all.forwarding" = lib.mkOverride 98 true;
+#     "net.ipv4.conf.default.forwarding" = lib.mkOverride 98 true;
+#   };
+
+#   services = {
+# dnsmasq = {
+#       enable = true;
+#       extraConfig = ''
+#         interface=wg0
+#       '';
+# };};
 
 
   # Open ports in the firewall.
-  # networking.firewall.allowedUDPPorts = [ 51820 ];
+  # networking.firewall.checkReversePath = false;
   networking.firewall.enable = true;
+  # networking.firewall = {
+  #   logReversePathDrops = true;
+  #  # wireguard trips rpfilter up
+  #  extraCommands = ''
+  #    ip46tables -t raw -I nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN
+  #    ip46tables -t raw -I nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN
+  #  '';
+  #  extraStopCommands = ''
+  #    ip46tables -t raw -D nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN || true
+  #    ip46tables -t raw -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
+  #  '';
+  # };
+  # networking.firewall.allowedUDPPorts = [ 51820 ];
+  # networking.nameservers = [ "10.0.0.10" ];
+  # networking.firewall.allowedTCPPorts = [ { from = 5556; to = 5558; } 51820 ];
+  # networking.firewall.allowedUDPPorts = [ 53 51820 51821 51822 41194 ];
   # networking.firewall.allowedTCPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  # networking.nat = {
+  #   enable = true;
+  #   externalInterface = "wg0";
+  #   internalInterfaces = [ "eth0" ];
+  # };
+  # services = {
+# dnsmasq = {
+#       enable = true;
+#       extraConfig = ''
+#         interface=wg0
+#       '';
+# };};
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -935,6 +1008,30 @@ in
   security.sudo.configFile = ''
   Defaults rootpw
   '';
+
+
+# # I3 For games,
+# environment.pathsToLink = [ "/libexec" ]; # links /libexec from derivations to /run/current-system/sw
+#   services.xserver = {
+#     enable = true;
+
+#     desktopManager = {
+#       xterm.enable = false;
+#     };
+
+#     displayManager = {
+#         defaultSession = "none+i3";
+#     };
+
+#     windowManager.i3 = {
+#       enable = true;
+#       extraPackages = with pkgs; [
+#         dmenu #application launcher most people use
+#         i3status # gives you the default i3 status bar
+#      ];
+#     };
+#   };
+
 
 
   # Running unstable packages anyway !!
