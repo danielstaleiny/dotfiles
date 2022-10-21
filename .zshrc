@@ -45,9 +45,6 @@ export LANG=en_US.UTF-8
 
 
 export npm_config_prefix=~/.node_modules
-export ENVIRONMENT=develop
-export ASPNETCORE_ENVIRONMENT=develop
-export CoafCompanyName=nordnet
 
 alias prod='ssh daniel@collageofficial.com'
 alias teamspeak='QT_QPA_PLATFORM=xcb ts3client'

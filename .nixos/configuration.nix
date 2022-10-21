@@ -11,6 +11,8 @@ let
     rev = "e1f1160284198a68ea8c7fffbbb1436f99e46ef9";
     ref = "master";
   });
+
+
   cachixpkgs = (import (builtins.fetchTarball { url = "https://cachix.org/api/v1/install"; }) {});
   # rlang = pkgs.rWrapper.override{ packages = with pkgs.rPackages;[ggplot2 dplyr xts lattice tidyverse ggthemes]; };
   # custom-python = pkgs.python3.withPackages (ps: with ps; [
@@ -96,21 +98,7 @@ in
   networking.hosts = {
     "0.0.0.0" = [
       "facebook.com"
-      "9gag.com"
-      "mojevideo.sk"
-      "4chan.org"
-      # "reddit.com"
-      # "www.reddit.com"
-      "instagram.com"
-      "www.instagram.com"
-      # "twitch.tv"
-      # "www.twitch.tv"
-      "news.ycombinator.com"
-      "beeg.com"
-      "pornhub.com"
-      "www.pornhub.com"
     ];
-    # "10.0.144.198" = ["nordnet.pensure.coaf-backend-clusterip"];
   };
 
 
@@ -166,7 +154,7 @@ in
       # custom-python
       conda
       dhall
-      # docker-compose
+      # podman-compose
       pandoc
       tectonic
       plantuml
@@ -253,6 +241,7 @@ in
       vscode
       wayvnc
       nomacs
+      sqls
     ]);
 
     wayland.windowManager.sway = {
@@ -585,6 +574,18 @@ in
   # nixpkgs.overlays = [ waylandOverlay];
   nixpkgs.config.allowUnfree = true;
 
+# nixpkgs.config = {
+#   # Allow proprietary packages
+#   allowUnfree = true;
+
+# # Create an alias for the unstable channel
+
+# packageOverrides = pkgs: {
+# oldNixPkgs = import <nixos-21> {
+#   inherit config;
+# };
+# };
+# };
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -708,6 +709,7 @@ in
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ]; # sway
   networking.wireguard.enable = true;
 
+
   # services.xinetd.enable = true;
   # services.xinetd.services.name = "test";
 
@@ -743,6 +745,8 @@ in
 
 
   virtualisation.docker.enable = true;
+# oldNixPkgs
+  # virtualisation.podman.enable = true;
 
 
   # services.httpd =
@@ -1041,6 +1045,6 @@ in
   # servers. You should change this only after NixOS release notes say you
   # should.
   # system.autoUpgrade = true;
-  system.stateVersion = "21.11"; # Did you read the comment?
+  system.stateVersion = "22.11"; # Did you read the comment?
 
 }
