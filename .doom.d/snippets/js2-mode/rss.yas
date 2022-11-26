@@ -1,0 +1,32 @@
+# -*- mode: snippet -*-
+# name: RSS
+# key: rss
+# --
+import {
+  checkIfNewDataArePresent,
+  buildPodcastObject,
+  buildEpisodesObject,
+  podcastCheckForValuesMissing,
+  done,
+} from '../utils.js'
+import { writeToCache } from '../cache.js'
+import { download } from '../web.js'
+import { upsertOrSelectsPodcast, upsertEpisodes } from '../api.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
+const __filename = fileURLToPath(import.meta.url)
+const file = path.basename(__filename)
+
+const AGE = ${1:undefined}
+const URL = '$0'
+
+download({ file, URL, AGE })
+  .then(checkIfNewDataArePresent)
+  .then(buildPodcastObject)
+  .then(podcastCheckForValuesMissing)
+  .then(upsertOrSelectsPodcast)
+  .then(buildEpisodesObject)
+  .then(upsertEpisodes)
+  .then(writeToCache(file))
+  .then(done)
+  .catch(console.error)

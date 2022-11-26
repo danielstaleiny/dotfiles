@@ -16,6 +16,8 @@
 !.nixos-system/**
 !.doom
 !.doom/**
+!.doom.d
+!.doom.d/**
 !.config
 !.config/sway
 !.config/rofi

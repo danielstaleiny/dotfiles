@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: Html list optimal for performance
+# key: html-list
+# --
+// Create an unordered list
+var list = document.createElement('ul');
+
+// Create a fragement
+var fragment = document.createDocumentFragment();
+
+// Create a list item for each wizard
+// and append it to the fragment
+wizards.forEach(function (wizard) {
+	var li = document.createElement('li');
+	li.textContent = wizard;
+	fragment.appendChild(li);
+});
+
+// Append the fragement to the list
+list.appendChild(fragment);
