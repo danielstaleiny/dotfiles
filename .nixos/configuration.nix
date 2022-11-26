@@ -8,7 +8,7 @@ let
   # ip = import "/home/anon/work/daniel/wireguard-server-nixos-digititalocean-private/ip.nix";
   home-manager = (builtins.fetchGit {
     url = "https://github.com/rycee/home-manager.git";
-    rev = "e1f1160284198a68ea8c7fffbbb1436f99e46ef9";
+    rev = "b764068a506c6f70dba998efa0e7fcb99cb4deb2";
     ref = "master";
   });
 
@@ -98,6 +98,20 @@ in
   networking.hosts = {
     "0.0.0.0" = [
       "facebook.com"
+      "9gag.com"
+      "mojevideo.sk"
+      "4chan.org"
+      "reddit.com"
+      "www.reddit.com"
+      "instagram.com"
+      "www.instagram.com"
+      # "twitch.tv"
+      # "dennikn.sk"
+      # "www.twitch.tv"
+      "news.ycombinator.com"
+      "beeg.com"
+      "pornhub.com"
+      "www.pornhub.com"
     ];
   };
 
@@ -146,6 +160,7 @@ in
       #PROGRAMMING
       git
       nodejs
+      deno
       nodePackages.js-beautify
       nodePackages.typescript-language-server
       nodePackages.typescript
@@ -165,7 +180,7 @@ in
       vlc
       evince # pdfviewer
       inkscape
-      libreoffice
+      # libreoffice
       gimp
       krita
       blender
@@ -238,10 +253,11 @@ in
       tcpdump
       nm-tray
       pavucontrol
-      vscode
+      # vscode
       wayvnc
       nomacs
       sqls
+      sayonara
     ]);
 
     wayland.windowManager.sway = {
@@ -253,7 +269,6 @@ in
       export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
       export XDG_CURRENT_DESKTOP=sway
       export XDG_SESSION_TYPE=wayland
-      export GTK_USE_PORTAL=1
       export SDL_VIDEODRIVER=wayland
       # needs qt5.qtwayland in systemPackages
       export QT_QPA_PLATFORM=wayland
@@ -706,7 +721,8 @@ in
   socketActivation = true;
   };
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ]; # sway
+  xdg.portal.wlr.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # sway
   networking.wireguard.enable = true;
 
 
