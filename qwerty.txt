@@ -115,9 +115,13 @@
 * alt -> delete
 * I use more often ctrl or alt than delete
 [lctrl]>[lalt]
-[delete]>[lctrl]
+[bspace]>[lctrl]
 [lalt]>[delete]
 [lwin]>[delete]
+{delete}>{speed9}{-lctrl}{bspace}{+lctrl}
+{lshift}{delete}>{speed9}{bspace}
+{rshift}{delete}>{speed9}{bspace}
+{lctrl}{delete}>{speed9}{bspace}
 
 
 * consitent command key with regular keyboards

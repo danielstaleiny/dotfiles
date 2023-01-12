@@ -14,9 +14,13 @@
 [ralt]>[lalt]
 [rwin]>[lalt]
 [lctrl]>[lalt]
-[delete]>[lctrl]
+[bspace]>[lctrl]
 [lalt]>[delete]
 [lwin]>[delete]
+{delete}>{speed9}{-lctrl}{bspace}{+lctrl}
+{lshift}{delete}>{speed9}{bspace}
+{rshift}{delete}>{speed9}{bspace}
+{lctrl}{delete}>{speed9}{bspace}
 {intl-\}>{speed9}{-lalt}{;}{+lalt}
 {home}>{speed9}{-lshift}{9}{+lshift}
 {lshift}{home}>{speed9}{9}
@@ -34,4 +38,3 @@
 {lshift}{pdown}>{speed9}{-lshift}{=}{+lshift}
 {rshift}{pdown}>{speed9}{-lshift}{=}{+lshift}
 {rshift}{lshift}{pdown}>{speed9}{-lshift}{=}{+lshift}
-

@@ -8,7 +8,7 @@ let
   # ip = import "/home/anon/work/daniel/wireguard-server-nixos-digititalocean-private/ip.nix";
   home-manager = (builtins.fetchGit {
     url = "https://github.com/rycee/home-manager.git";
-    rev = "b764068a506c6f70dba998efa0e7fcb99cb4deb2";
+    rev = "3ecd5305a41b6dd87f6cdf8cfe83ac07bdc47a0f";
     ref = "master";
   });
 
@@ -95,14 +95,15 @@ in
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
 
+
   networking.hosts = {
     "0.0.0.0" = [
       "facebook.com"
       "9gag.com"
       "mojevideo.sk"
       "4chan.org"
-      "reddit.com"
-      "www.reddit.com"
+      # "reddit.com"
+      # "www.reddit.com"
       "instagram.com"
       "www.instagram.com"
       # "twitch.tv"
@@ -164,6 +165,7 @@ in
       nodePackages.js-beautify
       nodePackages.typescript-language-server
       nodePackages.typescript
+      beekeeper-studio
       # deno
       python
       # custom-python
@@ -196,6 +198,7 @@ in
       arc-icon-theme
       adementary-theme
       gnome.adwaita-icon-theme
+      gnome-icon-theme
       libsForQt5.kcalc
       adwaita-qt
       # remove if they are not doing anything
@@ -204,8 +207,10 @@ in
       xdg-utils
       gnome.nautilus #file manager
       gnome.gnome-disk-utility
+      udisks
+      udiskie
       gnome.pomodoro
-      libsForQt5.dolphin #file manager
+      # libsForQt5.dolphin #file manager
       libsForQt5.gwenview # image viewer
       libsForQt5.ark
       qt5.qtwayland
@@ -239,7 +244,7 @@ in
       libsForQt5.kdegraphics-thumbnailers
       libsForQt5.kimageformats
       element-desktop
-      # lutris
+      lutris
       # discord
       (steam.override {
         extraPkgs = pkgs: with pkgs; [ pango harfbuzz libthai ];
@@ -258,11 +263,13 @@ in
       nomacs
       sqls
       sayonara
+      autofs5 # kernel based automounter
     ]);
 
     wayland.windowManager.sway = {
       enable = true;
       config = null;
+      wrapperFeatures = { gtk = true; };
       extraConfig = builtins.readFile "/home/anon/.config/sway/.config";
 
       extraSessionCommands = ''
@@ -351,11 +358,11 @@ in
     gtk = {
       enable = true;
       font.name = "Noto Sans Mono ${config.font.pt-str}";
-      iconTheme.name = "arc-icon-theme";
-      theme.name = "Arc-Dark";
-      # iconTheme.name = "Adwaita";
+      # iconTheme.name = "arc-icon-theme";
+      # theme.name = "Arc-Dark";
+      iconTheme.name = "Adwaita";
       # theme.name = "Adwaita";
-      # theme.name = "Adwaita-dark";
+      theme.name = "Adwaita-dark";
     };
 
     programs.alacritty = {
@@ -720,9 +727,10 @@ in
   pulse.enable = true;
   socketActivation = true;
   };
+  services.dbus.enable = true;
   xdg.portal.enable = true;
   xdg.portal.wlr.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # sway
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-gnome ]; # sway
   networking.wireguard.enable = true;
 
 
